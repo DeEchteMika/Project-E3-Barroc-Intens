@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/Management-Dashboard', function () {
+    return view('dashboards.managementDashboard');
+})->name('managementDashboard');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
