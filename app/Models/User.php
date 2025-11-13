@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function medewerker()
+    {
+        return $this->hasOne(\App\Models\Medewerker::class, 'user_id', 'id');
+    }
 }
