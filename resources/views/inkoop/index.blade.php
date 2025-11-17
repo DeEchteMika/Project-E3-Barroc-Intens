@@ -1,41 +1,48 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>Producten (Inkoop beheer)</h1>
+<div class="max-w-7xl mx-auto py-8 px-4">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-semibold text-gray-900">Producten (Inkoop beheer)</h1>
+        <a href="{{ route('inkoop.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-gray-900 text-sm font-medium rounded-md hover:bg-blue-700">Nieuw product</a>
+    </div>
 
-    <a href="{{ route('inkoop.create') }}" class="btn btn-primary">Nieuw product</a>
+    @if(session('success'))
+        <div class="mb-4 p-3 rounded bg-green-50 border border-green-200 text-green-800">{{ session('success') }}</div>
+    @endif
 
-    <table class="table mt-3">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Productnummer</th>
-                <th>Naam</th>
-                <th>Prijs</th>
-                <th>Voorraad</th>
-                <th>Acties</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($products as $p)
-            <tr>
-                <td>{{ $p->product_id }}</td>
-                <td>{{ $p->productnummer }}</td>
-                <td>{{ $p->naam }}</td>
-                <td>€ {{ number_format($p->prijs ?? 0,2,',','.') }}</td>
-                <td>{{ $p->voorraad ?? 0 }}</td>
-                <td>
-                    <form action="{{ route('inkoop.destroy', $p->product_id) }}" method="POST" style="display:inline-block;">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-sm btn-danger" onclick="return confirm('Weet je het zeker?')">Verwijder</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div class="overflow-x-auto bg-white shadow rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Productnummer</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Naam</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prijs</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Voorraad</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acties</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @foreach($products as $p)
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $p->product_id }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $p->productnummer }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $p->naam }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">€ {{ number_format($p->prijs ?? 0,2,',','.') }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $p->voorraad ?? 0 }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                        <form action="{{ route('inkoop.destroy', $p) }}" method="POST" onsubmit="return confirm('Weet je het zeker?');" class="inline-block">
+                            @csrf
+                            @method('DELETE')
+                            <button class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Verwijderen</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 
 @endsection
