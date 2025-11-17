@@ -21,10 +21,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        // Seed rechten (roles) and example medewerkers
+        // Seed rechten (roles), medewerkers and products
         $this->call([
             \Database\Seeders\RechtenSeeder::class,
             \Database\Seeders\MedewerkerSeeder::class,
+            \Database\Seeders\ProductSeeder::class,
         ]);
     }
 }

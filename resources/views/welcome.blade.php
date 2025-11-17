@@ -25,7 +25,6 @@
         </div>
             <p>{{ $displayText }}</p>
     @endauth
-
     @guest
         <p>Je bent niet ingelogd.</p>
     @endguest
