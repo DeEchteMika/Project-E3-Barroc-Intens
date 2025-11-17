@@ -23,10 +23,7 @@
             <div>Rol functie: {{ optional(auth()->user()->medewerker)->functie ?? 'n.v.t.' }}</div>
             <div>Toegangsniveau: {{ $niveau }}</div>
         </div>
-
-        @if($displayText)
             <p>{{ $displayText }}</p>
-        @endif
     @endauth
 
     @guest

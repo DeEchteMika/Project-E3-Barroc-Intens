@@ -30,6 +30,11 @@ enum RoleEnum: int
         return match($this) {
             self::INKOOP => 'Inkoop',
             self::KLANTENSERVICE => 'Klantenservice',
+            self::MANAGEMENT => 'Management',
+            self::ADMIN => 'Administrator',
+            self::SALES => 'Sales',
+            self::FINANCIEN => 'Financiën',
+            self::ONDERHOUD => 'Onderhoud',
             default => '',
         };
     }
