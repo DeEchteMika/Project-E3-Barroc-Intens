@@ -7,11 +7,13 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>kut website werkt eindelijk als je dit ziet</h1>
+    <h1>website werkt eindelijk als je dit ziet</h1>
 
     @auth
         @php
             $niveau = optional(optional(auth()->user()->medewerker)->rechten)->toegangsniveau ?? 0;
+            $roleEnum = \App\Enums\RoleEnum::tryFrom($niveau);
+            $displayText = $roleEnum ? $roleEnum->displayText() : '';
         @endphp
 
         <div style="background:#f6f6f6;padding:8px;margin:8px 0;border:1px solid #ddd;">
@@ -22,10 +24,8 @@
             <div>Toegangsniveau: {{ $niveau }}</div>
         </div>
 
-        @if($niveau == 4)
-            <p>Inkoop</p>
-        @elseif($niveau == 3)
-            <p>Klantenservice</p>
+        @if($displayText)
+            <p>{{ $displayText }}</p>
         @endif
     @endauth
 
