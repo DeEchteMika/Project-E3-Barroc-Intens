@@ -12,6 +12,9 @@ Route::get('/Management-Dashboard', function () {
     return view('dashboards.managementDashboard');
 })->name('managementDashboard');
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/sales-dashboard', function () {
     return view('sales');
