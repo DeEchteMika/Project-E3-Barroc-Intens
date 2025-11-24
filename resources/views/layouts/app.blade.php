@@ -17,7 +17,6 @@
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
-            @include('components.sidebar')
 
                 <div class="flex-1">
                     <!-- Page Heading -->

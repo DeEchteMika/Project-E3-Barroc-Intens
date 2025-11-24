@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.login');
 });
-Route::get('/Management-Dashboard', function () {
-    return view('dashboards.managementDashboard');
-})->name('managementDashboard');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -47,5 +44,18 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('customers', CustomerController::class)->only(['index', 'create', 'store']);
 });
+
+Route::get('/klantenservice', function () { return view('klantenservice.index');})->name('klantenservice');
+
+Route::get('/sales', function () { return view('sales.index');})->name('sales');
+
+
+Route::get('/onderhoud', function () {return view('onderhoud.index');})->name('onderhoud');
+
+Route::get('/financien', function () { return view('financien.index');})->name('financien');
+
+Route::get('/management', function () { return view('management.index');})->name('management');
+
+Route::get('/admin', function () { return view('admin.index');})->name('admin');
 
 require __DIR__.'/auth.php';
