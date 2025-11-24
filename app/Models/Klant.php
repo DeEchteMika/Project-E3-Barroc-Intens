@@ -22,6 +22,7 @@ class Klant extends Model
         'plaats',
         'telefoon',
         'email',
+        'bkr_check',
         'opmerkingen',
     ];
 
