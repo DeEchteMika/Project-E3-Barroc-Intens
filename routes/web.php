@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InkoopController;
 use App\Http\Controllers\InkoopRegelController;
@@ -18,8 +19,12 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/sales-dashboard', function () {
-    return view('sales');
+    return view('sales/sales-dashboard');
 })->middleware(['auth', 'verified'])->name('sales.dashboard');
+Route::get('/sales-create', [CustomerController::class, 'create'])
+    ->middleware(['auth', 'verified'])
+    ->name('sales.create');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -37,6 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::get('financien/create', [FinancienController::class, 'create'])->name('financien.create');
     Route::post('financien', [FinancienController::class, 'store'])->name('financien.store');
     
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('customers', CustomerController::class)->only(['index', 'create', 'store']);
 });
 
 require __DIR__.'/auth.php';
