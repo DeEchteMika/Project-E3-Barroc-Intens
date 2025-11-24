@@ -78,14 +78,17 @@
         }
     },
     "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true,
-        "allow-plugins": {
+        "audit": {
+            "block-insecure": false,
+            "optimize-autoloader": true,
+            "preferred-install": "dist",
+            "sort-packages": true,
+            "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "pestphp/pest-plugin-laravel": true
         }
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+        },
+        "minimum-stability": "stable",
+        "prefer-stable": true
+    }
 }

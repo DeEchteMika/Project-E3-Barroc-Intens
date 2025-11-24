@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InkoopController;
 use App\Http\Controllers\InkoopRegelController;
@@ -17,8 +18,12 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/sales-dashboard', function () {
-    return view('sales');
+    return view('sales/sales-dashboard');
 })->middleware(['auth', 'verified'])->name('sales.dashboard');
+Route::get('/sales-create', [CustomerController::class, 'create'])
+    ->middleware(['auth', 'verified'])
+    ->name('sales.create');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -30,6 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::get('inkoop/create', [InkoopController::class, 'create'])->name('inkoop.create');
     Route::post('inkoop', [InkoopController::class, 'store'])->name('inkoop.store');
     Route::delete('inkoop/{product}', [InkoopController::class, 'destroy'])->name('inkoop.destroy');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('customers', CustomerController::class)->only(['index', 'create', 'store']);
 });
 
 require __DIR__.'/auth.php';
