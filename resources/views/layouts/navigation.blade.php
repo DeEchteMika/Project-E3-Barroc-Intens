@@ -7,6 +7,7 @@
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
+
                 </div>
 
                 <!-- Navigation Links -->
@@ -14,12 +15,34 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+<<<<<<< Updated upstream
                     <x-nav-link :href="route('sales.dashboard')" :active="request()->routeIs('sales')">
                         {{ __('sales') }}
+=======
+                    <x-nav-link :href="route('klantenservice.index')" :active="request()->routeIs('klantenservice.index')">
+                        {{ __('Klantenservice') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('onderhoud.index')" :active="request()->routeIs('onderhoud.index')">
+                        {{ __('Onderhoud') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('sales.index')" :active="request()->routeIs('sales.index')">
+                        {{ __('Sales') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('inkoop.index')" :active="request()->routeIs('inkoop.index')">
+                        {{ __('Inkoop') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('financien.index')" :active="request()->routeIs('financien.index')">
+                        {{ __('Financiën') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('management.index')" :active="request()->routeIs('management.index')">
+                        {{ __('Management') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.index')">
+                        {{ __('Admin') }}
+>>>>>>> Stashed changes
                     </x-nav-link>
                 </div>
             </div>
-
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
