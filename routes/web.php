@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InkoopController;
 use App\Http\Controllers\InkoopRegelController;
+use App\Http\Controllers\FinancienController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,8 +19,12 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/sales-dashboard', function () {
-    return view('sales');
+    return view('sales/sales-dashboard');
 })->middleware(['auth', 'verified'])->name('sales.dashboard');
+Route::get('/sales-create', [CustomerController::class, 'create'])
+    ->middleware(['auth', 'verified'])
+    ->name('sales.create');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -30,6 +36,16 @@ Route::middleware('auth')->group(function () {
     Route::get('inkoop/create', [InkoopController::class, 'create'])->name('inkoop.create');
     Route::post('inkoop', [InkoopController::class, 'store'])->name('inkoop.store');
     Route::delete('inkoop/{product}', [InkoopController::class, 'destroy'])->name('inkoop.destroy');
+
+    // financien routes
+    Route::get('financien', [FinancienController::class, 'index'])->name('financien.index');
+    Route::get('financien/create', [FinancienController::class, 'create'])->name('financien.create');
+    Route::post('financien', [FinancienController::class, 'store'])->name('financien.store');
+    
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('customers', CustomerController::class)->only(['index', 'create', 'store']);
 });
 
 require __DIR__.'/auth.php';
