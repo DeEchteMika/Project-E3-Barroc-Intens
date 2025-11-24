@@ -15,10 +15,6 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-<<<<<<< Updated upstream
-                    <x-nav-link :href="route('sales.dashboard')" :active="request()->routeIs('sales')">
-                        {{ __('sales') }}
-=======
                     <x-nav-link :href="route('klantenservice.index')" :active="request()->routeIs('klantenservice.index')">
                         {{ __('Klantenservice') }}
                     </x-nav-link>
@@ -39,7 +35,6 @@
                     </x-nav-link>
                     <x-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.index')">
                         {{ __('Admin') }}
->>>>>>> Stashed changes
                     </x-nav-link>
                 </div>
             </div>
