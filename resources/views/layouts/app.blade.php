@@ -29,12 +29,10 @@
                         </header>
                     @endisset
 
-                    <!-- Page Content -->
-                    <main class="p-6">
-                        @yield('content')
-                    </main>
-                </div>
-            </div>
+            <!-- Page Content -->
+            <main>
+                @yield('content')
+            </main>
         </div>
     </body>
 </html>
