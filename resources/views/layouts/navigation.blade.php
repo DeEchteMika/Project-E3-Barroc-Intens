@@ -15,30 +15,52 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('klantenservice.index')" :active="request()->routeIs('klantenservice.index')">
+
+                    @canAccess('klantenservice')
+                    <x-nav-link :href="route('klantenservice')" :active="request()->routeIs('klantenservice')">
                         {{ __('Klantenservice') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('onderhoud.index')" :active="request()->routeIs('onderhoud.index')">
+                    @endcanAccess
+
+                    @canAccess('onderhoud')
+                    <x-nav-link :href="route('onderhoud')" :active="request()->routeIs('onderhoud')">
                         {{ __('Onderhoud') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('sales.index')" :active="request()->routeIs('sales.index')">
+                    @endcanAccess
+
+                    @canAccess('sales')
+                    <x-nav-link :href="route('sales')" :active="request()->routeIs('sales')">
                         {{ __('Sales') }}
                     </x-nav-link>
+                    @endcanAccess
+
+                    @canAccess('inkoop')
                     <x-nav-link :href="route('inkoop.index')" :active="request()->routeIs('inkoop.index')">
                         {{ __('Inkoop') }}
                     </x-nav-link>
+                    @endcanAccess
+
+                    @canAccess('financien')
                     <x-nav-link :href="route('financien.index')" :active="request()->routeIs('financien.index')">
                         {{ __('Financiën') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('management.index')" :active="request()->routeIs('management.index')">
+                    @endcanAccess
+
+                    @canAccess('management')
+                    <x-nav-link :href="route('management')" :active="request()->routeIs('management')">
                         {{ __('Management') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.index')">
+                    @endcanAccess
+
+                    @canAccess('admin')
+                    <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
                         {{ __('Admin') }}
                     </x-nav-link>
+                    @endcanAccess
                 </div>
             </div>
             <!-- Settings Dropdown -->
+            @auth
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -71,6 +93,7 @@
                     </x-slot>
                 </x-dropdown>
             </div>
+            @endauth
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
@@ -90,9 +113,52 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @canAccess('klantenservice')
+            <x-responsive-nav-link :href="route('klantenservice')" :active="request()->routeIs('klantenservice')">
+                {{ __('Klantenservice') }}
+            </x-responsive-nav-link>
+            @endcanAccess
+
+            @canAccess('onderhoud')
+            <x-responsive-nav-link :href="route('onderhoud')" :active="request()->routeIs('onderhoud')">
+                {{ __('Onderhoud') }}
+            </x-responsive-nav-link>
+            @endcanAccess
+
+            @canAccess('sales')
+            <x-responsive-nav-link :href="route('sales')" :active="request()->routeIs('sales')">
+                {{ __('Sales') }}
+            </x-responsive-nav-link>
+            @endcanAccess
+
+            @canAccess('inkoop')
+            <x-responsive-nav-link :href="route('inkoop.index')" :active="request()->routeIs('inkoop.index')">
+                {{ __('Inkoop') }}
+            </x-responsive-nav-link>
+            @endcanAccess
+
+            @canAccess('financien')
+            <x-responsive-nav-link :href="route('financien.index')" :active="request()->routeIs('financien.index')">
+                {{ __('Financiën') }}
+            </x-responsive-nav-link>
+            @endcanAccess
+
+            @canAccess('management')
+            <x-responsive-nav-link :href="route('management')" :active="request()->routeIs('management')">
+                {{ __('Management') }}
+            </x-responsive-nav-link>
+            @endcanAccess
+
+            @canAccess('admin')
+            <x-responsive-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                {{ __('Admin') }}
+            </x-responsive-nav-link>
+            @endcanAccess
         </div>
 
         <!-- Responsive Settings Options -->
+        @auth
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
@@ -116,5 +182,6 @@
                 </form>
             </div>
         </div>
+        @endauth
     </div>
 </nav>
