@@ -26,11 +26,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Customers (index, create, store)
     Route::resource('customers', CustomerController::class)
         ->only(['index', 'create', 'store']);
-
-    // Alias route for the same create form (Sales form button)
-    Route::get('/sales-create', [CustomerController::class, 'create'])
-        ->name('sales.create');
 });
+
+Route::post('financien/{klant}', [FinancienController::class, 'update'])->name('financien.update');
+
 
 // Auth only: profile, inkoop, financien
 Route::middleware('auth')->group(function () {
@@ -50,7 +49,19 @@ Route::middleware('auth')->group(function () {
     Route::get('financien/', [FinancienController::class, 'edit'])->name('financien.edit');
     Route::get('financien/create', [FinancienController::class, 'create'])->name('financien.create');
     Route::post('financien', [FinancienController::class, 'store'])->name('financien.store');
+
     Route::post('financien/{klant}', [FinancienController::class, 'update'])->name('financien.update');
+
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('customers', CustomerController::class)->only(['index', 'create', 'store']);
+});
+
+Route::get('/klantenservice', function () { return view('klantenservice.index');})->name('klantenservice');
+
+Route::get('/sales', function () { return view('sales.index');})->name('sales');
+
 });
 
 // Public / no-auth pages (if that's intended)
