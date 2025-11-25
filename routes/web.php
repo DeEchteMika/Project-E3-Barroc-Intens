@@ -62,7 +62,7 @@ Route::get('/klantenservice', function () { return view('klantenservice.index');
 
 Route::get('/sales', function () { return view('sales.index');})->name('sales');
 
-});
+
 
 // Public / no-auth pages (if that's intended)
 Route::get('/klantenservice', function () {
