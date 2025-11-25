@@ -47,11 +47,23 @@ Route::middleware('auth')->group(function () {
 
     // Financien routes
     Route::get('financien', [FinancienController::class, 'index'])->name('financien.index');
-    Route::get('financien/', [FinancienController::class, 'edit'])->name('financien.edit');
+    Route::get('financien/{klant}/edit', [FinancienController::class, 'edit'])->name('financien.edit');
     Route::get('financien/create', [FinancienController::class, 'create'])->name('financien.create');
     Route::post('financien', [FinancienController::class, 'store'])->name('financien.store');
-    Route::post('financien/{klant}', [FinancienController::class, 'update'])->name('financien.update');
+    Route::put('financien/update', [FinancienController::class, 'update'])->name('financien.update');
+
 });
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('customers', CustomerController::class)
+    ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+});
+
+Route::get('/klantenservice', function () { return view('klantenservice.index');})->name('klantenservice');
+
+Route::get('/sales', function () { return view('sales.index');})->name('sales');
+
+
 
 // Public / no-auth pages (if that's intended)
 Route::get('/klantenservice', function () {
