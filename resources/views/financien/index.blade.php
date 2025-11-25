@@ -42,7 +42,7 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $k->opmerkingen }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
                         <a href="{{ route('financien.edit', $k->id) }}" class="text-blue-600 hover:text-blue-900">Aanpassen</a>
                     </td>
                 </tr>
