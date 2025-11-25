@@ -20,7 +20,7 @@ class KlantSeeder extends Seeder
                 'plaats' => 'Amsterdam',
                 'telefoon' => '0612345678',
                 'email' => 'jan.jansen@bedrijfa.nl',
-                'bkr_check' => 'Nog niet gekeurd...',
+                'bkr_check' => 'Goed gekeurd!',
                 'opmerkingen' => '',
             ],
             [

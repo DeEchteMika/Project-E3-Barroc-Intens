@@ -31,14 +31,28 @@ class FinancienController extends Controller
         //
     }
 
-    public function edit($id)
+    public function edit(Klant $klant)
     {
-        //
+        return view('financien.edit', compact('klant'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Klant $klant)
     {
-        //
+        $klant ->klanrummer = $request->klantnummer;
+        $klant ->bedrijfsnaam = $request->bedrijfsnaam;
+        $klant ->contactpersoon = $request->contactpersoon;
+        $klant ->adres = $request->adres;
+        $klant ->postcode = $request->postcode;
+        $klant ->plaats = $request->plaats;
+        $klant ->telefoon = $request->telefoon;
+        $klant ->email = $request->email;
+        $klant ->bkr_check = $request->bkr_check;
+        $klant ->opmerkingen = $request->opmerkingen;
+        $klant->save();
+
+
+        // Redirect back to the financien index with a success message
+        return redirect()->route('financien.index')->with('success', 'Klantgegevens succesvol bijgewerkt.');
     }
 
     public function destroy($id)

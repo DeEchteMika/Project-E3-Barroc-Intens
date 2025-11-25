@@ -36,8 +36,11 @@ Route::middleware('auth')->group(function () {
 
     // financien routes
     Route::get('financien', [FinancienController::class, 'index'])->name('financien.index');
+    Route::get('financien/', [FinancienController::class, 'edit'])->name('financien.edit');
     Route::get('financien/create', [FinancienController::class, 'create'])->name('financien.create');
     Route::post('financien', [FinancienController::class, 'store'])->name('financien.store');
+
+    Route::post('financien/{klant}', [FinancienController::class, 'update'])->name('financien.update');
 
 });
 
@@ -51,7 +54,6 @@ Route::get('/sales', function () { return view('sales.index');})->name('sales');
 
 
 Route::get('/onderhoud', function () {return view('onderhoud.index');})->name('onderhoud');
-
 
 
 Route::get('/management', function () { return view('management.index');})->name('management');
