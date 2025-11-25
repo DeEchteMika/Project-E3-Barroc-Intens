@@ -1,26 +1,28 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Customers') }}
-            </h2>
+@extends('layouts.app')
 
-            <div class="flex items-center gap-3">
-                <a href="{{ route('sales.create') }}"
-                   class="inline-flex items-center px-3 py-1.5 text-sm border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                    {{ __('Sales form') }}
-                </a>
-
-                <a href="{{ route('customers.create') }}"
-                   class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-md text-white bg-amber-600 hover:bg-amber-700">
-                    {{ __('Add customer') }}
-                </a>
-            </div>
-        </div>
-    </x-slot>
-
+@section('content')
     <div class="py-10">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            {{-- Header --}}
+            <div class="mb-6 flex items-center justify-between">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ __('Customers') }}
+                </h2>
+
+                <div class="flex items-center gap-3">
+                    <a href="{{ route('sales.create') }}"
+                       class="inline-flex items-center px-3 py-1.5 text-sm border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        {{ __('Sales form') }}
+                    </a>
+
+                    <a href="{{ route('customers.create') }}"
+                       class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-md text-white bg-amber-600 hover:bg-amber-700">
+                        {{ __('Add customer') }}
+                    </a>
+                </div>
+            </div>
+
+            {{-- Card --}}
             <div class="bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     @if (session('status'))
@@ -83,4 +85,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection
