@@ -1,8 +1,10 @@
 @extends('layouts.app')
+
+@section('content')
 {{-- make edit form and show everything --}}
 <form action="{{ route('financien.update', $klant->id) }}" method="POST">
     @csrf
-    
+    @method('PUT')
 
     <div class="mb-4">
         <label for="bkr_check" class="block text-gray-700 font-bold mb-2">BKR Check:</label>
