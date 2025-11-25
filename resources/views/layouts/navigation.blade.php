@@ -29,7 +29,7 @@
                     @endcanAccess
 
                     @canAccess('sales')
-                    <x-nav-link :href="route('sales')" :active="request()->routeIs('sales')">
+                    <x-nav-link :href="route('sales.dashboard')" :active="request()->routeIs('sales.*')">
                         {{ __('Sales') }}
                     </x-nav-link>
                     @endcanAccess
@@ -127,7 +127,10 @@
             @endcanAccess
 
             @canAccess('sales')
-            <x-responsive-nav-link :href="route('sales')" :active="request()->routeIs('sales')">
+            <x-responsive-nav-link
+                :href="route('sales.dashboard')"
+                :active="request()->routeIs('sales.*')"
+            >
                 {{ __('Sales') }}
             </x-responsive-nav-link>
             @endcanAccess

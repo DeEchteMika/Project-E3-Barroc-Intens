@@ -15,12 +15,24 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/sales-dashboard', function () {
-    return view('sales/sales-dashboard');
-})->middleware(['auth', 'verified'])->name('sales.dashboard');
-Route::get('/sales-create', [CustomerController::class, 'create'])
-    ->middleware(['auth', 'verified'])
-    ->name('sales.create');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/sales-dashboard', function () {
+        return view('sales.sales-dashboard');
+    })->name('sales.dashboard');
+
+    // list customers
+    Route::get('/customers', [CustomerController::class, 'index'])
+        ->name('customers.index');
+
+    // show create form
+    Route::get('/sales-create', [CustomerController::class, 'create'])
+        ->name('sales.create');
+
+    // handle form submit
+    Route::post('/customers', [CustomerController::class, 'store'])
+        ->name('customers.store');
+});
 
 
 Route::middleware('auth')->group(function () {
@@ -46,8 +58,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('/klantenservice', function () { return view('klantenservice.index');})->name('klantenservice');
-
-Route::get('/sales', function () { return view('sales.index');})->name('sales');
 
 
 Route::get('/onderhoud', function () {return view('onderhoud.index');})->name('onderhoud');
