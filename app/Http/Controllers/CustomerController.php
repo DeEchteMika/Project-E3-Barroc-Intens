@@ -21,8 +21,9 @@ class CustomerController extends Controller
 
     public function create(): View
     {
-        return view('sales.sales-create');
+        return view('customers.create');
     }
+
 
     public function store(Request $request): RedirectResponse
     {
