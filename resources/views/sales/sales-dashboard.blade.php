@@ -1,10 +1,6 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Sales Overview') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
+@section('content')
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
 
@@ -173,7 +169,7 @@
                                 <span>{{ __('Log a follow-up call') }}</span>
                                 <span class="text-xs text-gray-400">C</span>
                             </a>
-                            <a href="#"
+                            <a href="{{ route('customers.create') }}"
                                class="flex items-center justify-between px-3 py-2 rounded-md border border-gray-200 text-sm text-gray-800 hover:bg-gray-50">
                                 <span>{{ __('Add new customer') }}</span>
                                 <span class="text-xs text-gray-400">N</span>
@@ -253,4 +249,4 @@
 
         </div>
     </div>
-</x-app-layout>
+@endsection

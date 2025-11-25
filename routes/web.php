@@ -11,19 +11,29 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
+// Dashboard
+Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->name('dashboard');
 
-Route::get('/sales-dashboard', function () {
-    return view('sales/sales-dashboard');
-})->middleware(['auth', 'verified'])->name('sales.dashboard');
-Route::get('/sales-create', [CustomerController::class, 'create'])
-    ->middleware(['auth', 'verified'])
-    ->name('sales.create');
+// Auth + verified: sales & customers
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Sales dashboard
+    Route::get('/sales-dashboard', function () {
+        return view('sales.sales-dashboard');
+    })->name('sales.dashboard');
+
+    // Customers (index, create, store)
+    Route::resource('customers', CustomerController::class)
+        ->only(['index', 'create', 'store']);
+});
+
+Route::post('financien/{klant}', [FinancienController::class, 'update'])->name('financien.update');
 
 
+// Auth only: profile, inkoop, financien
 Route::middleware('auth')->group(function () {
+    // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -34,7 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::post('inkoop', [InkoopController::class, 'store'])->name('inkoop.store');
     Route::delete('inkoop/{product}', [InkoopController::class, 'destroy'])->name('inkoop.destroy');
 
-    // financien routes
+    // Financien routes
     Route::get('financien', [FinancienController::class, 'index'])->name('financien.index');
     Route::get('financien/', [FinancienController::class, 'edit'])->name('financien.edit');
     Route::get('financien/create', [FinancienController::class, 'create'])->name('financien.create');
@@ -52,12 +62,23 @@ Route::get('/klantenservice', function () { return view('klantenservice.index');
 
 Route::get('/sales', function () { return view('sales.index');})->name('sales');
 
+});
 
-Route::get('/onderhoud', function () {return view('onderhoud.index');})->name('onderhoud');
+// Public / no-auth pages (if that's intended)
+Route::get('/klantenservice', function () {
+    return view('klantenservice.index');
+})->name('klantenservice');
 
+Route::get('/onderhoud', function () {
+    return view('onderhoud.index');
+})->name('onderhoud');
 
-Route::get('/management', function () { return view('management.index');})->name('management');
+Route::get('/management', function () {
+    return view('management.index');
+})->name('management');
 
-Route::get('/admin', function () { return view('admin.index');})->name('admin');
+Route::get('/admin', function () {
+    return view('admin.index');
+})->name('admin');
 
 require __DIR__.'/auth.php';
