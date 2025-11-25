@@ -56,7 +56,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('customers', CustomerController::class)
-    ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 });
 
 Route::get('/klantenservice', function () { return view('klantenservice.index');})->name('klantenservice');
