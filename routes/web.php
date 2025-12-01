@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::get('financien', [FinancienController::class, 'index'])->name('financien.index');
     Route::get('financien/{klant}/edit', [FinancienController::class, 'edit'])->name('financien.edit');
     Route::get('financien/create', [FinancienController::class, 'create'])->name('financien.create');
-    Route::post('financien', [FinancienController::class, 'store'])->name('financien.store'];
+    Route::post('financien', [FinancienController::class, 'store'])->name('financien.store');
     Route::put('financien/update', [FinancienController::class, 'update'])->name('financien.update');
 
     // Test mail routes
