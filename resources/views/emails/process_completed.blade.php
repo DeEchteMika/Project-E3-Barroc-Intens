@@ -1,9 +1,3 @@
-@if(isset($klant) && $klant)
-    <p>Beste {{ $klant->contactpersoon ?? $klant->bedrijfsnaam ?? 'klant' }},</p>
-@else
-    <p>Beste klant,</p>
-@endif
-
 @if(isset($klant) && $klant->bkr_check === 'Goed gekeurd!')
     <h3>Onderwerp: Bevestiging BCR-check - Goedgekeurd</h3>
     <p>Beste {{ $klant->contactpersoon ?? 'klant' }},</p>
