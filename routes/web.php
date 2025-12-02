@@ -56,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('/klantenservice', function () {
     return view('klantenservice.index');
 })->name('klantenservice');
+Route::get('/klanten', [FinancienController::class, 'index'])->name('klanten');
 
 Route::get('/sales', function () {
     return view('sales.index');
@@ -64,6 +65,7 @@ Route::get('/sales', function () {
 Route::get('/klantenservice', function () {
     return view('klantenservice.index');
 })->name('klantenservice');
+
 
 Route::get('/onderhoud', function () {
     return view('onderhoud.index');

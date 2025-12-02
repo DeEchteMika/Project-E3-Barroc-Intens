@@ -20,6 +20,9 @@
                     <x-nav-link :href="route('klantenservice')" :active="request()->routeIs('klantenservice')">
                         {{ __('Klantenservice') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('klanten')" :active="request()->routeIs('klanten')">
+                        {{ __('Klanten') }}
+                    </x-nav-link>
                     @endcanAccess
 
                     @canAccess('onderhoud')
