@@ -40,6 +40,7 @@
                                 <th class="px-3 py-2">{{ __('Phone') }}</th>
                                 <th class="px-3 py-2">{{ __('City') }}</th>
                                 <th class="px-3 py-2 text-right">{{ __('Created at') }}</th>
+                                <th class="px-3 py-2 text-right">{{ __('Actions') }}</th>
                             </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
@@ -66,10 +67,32 @@
                                     <td class="px-3 py-3 text-right text-gray-500">
                                         {{ optional($customer->created_at)->format('d-m-Y') }}
                                     </td>
+                                    <td class="px-3 py-3 text-right">
+                                        <div class="flex items-center justify-end gap-2">
+                                            {{-- Edit --}}
+                                            <a href="{{ route('customers.edit', $customer) }}"
+                                               class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-50">
+                                                {{ __('Edit') }}
+                                            </a>
+
+                                            {{-- Delete --}}
+                                            <form method="POST"
+                                                  action="{{ route('customers.destroy', $customer) }}"
+                                                  onsubmit="return confirm('{{ __('Are you sure you want to delete this customer? This action cannot be undone.') }}');">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit"
+                                                        class="inline-flex items-center px-2.5 py-1.5 text-xs font-medium rounded-md bg-red-600 text-white hover:bg-red-700">
+                                                    {{ __('Delete') }}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="px-3 py-6 text-center text-gray-500">
+                                    <td colspan="8" class="px-3 py-6 text-center text-gray-500">
                                         {{ __('No customers found yet.') }}
                                     </td>
                                 </tr>

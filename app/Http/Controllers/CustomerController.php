@@ -24,40 +24,84 @@ class CustomerController extends Controller
         return view('customers.create');
     }
 
-
     public function store(Request $request): RedirectResponse
     {
-        $data = $request->validate([
-            'company_name' => ['required', 'string', 'max:200'],
-            'contact_person' => ['nullable', 'string', 'max:200'],
-            'email' => ['required', 'email:rfc,dns', 'max:150'],
-            'phone' => ['nullable', 'string', 'max:50'],
-            'street' => ['nullable', 'string', 'max:255'],
-            'house_number' => ['nullable', 'string', 'max:20'],
-            'postal_code' => ['nullable', 'string', 'max:20'],
-            'city' => ['nullable', 'string', 'max:100'],
-            'kvk_number' => ['nullable', 'string', 'max:100'],
-            'vat_number' => ['nullable', 'string', 'max:100'],
-            'credit_limit' => ['nullable', 'numeric', 'min:0'],
-            'status' => ['nullable', 'string', 'max:50'],
-            'notes' => ['nullable', 'string', 'max:2000'],
-        ]);
+        $data = $this->validateCustomer($request);
 
         Klant::create([
-            'klantnummer' => $this->generateCustomerNumber(),
-            'bedrijfsnaam' => $data['company_name'],
+            'klantnummer'    => $this->generateCustomerNumber(),
+            'bedrijfsnaam'   => $data['company_name'],
             'contactpersoon' => $data['contact_person'] ?? null,
-            'adres' => $this->composeAddress($data['street'] ?? null, $data['house_number'] ?? null),
-            'postcode' => $data['postal_code'] ?? null,
-            'plaats' => $data['city'] ?? null,
-            'telefoon' => $data['phone'] ?? null,
-            'email' => $data['email'],
-            'opmerkingen' => $this->composeNotes($data),
+            'adres'          => $this->composeAddress($data['street'] ?? null, $data['house_number'] ?? null),
+            'postcode'       => $data['postal_code'] ?? null,
+            'plaats'         => $data['city'] ?? null,
+            'telefoon'       => $data['phone'] ?? null,
+            'email'          => $data['email'],
+            'opmerkingen'    => $this->composeNotes($data),
         ]);
 
         return redirect()
             ->route('customers.index')
             ->with('status', __('Customer successfully created.'));
+    }
+
+    public function edit(Klant $customer): View
+    {
+        return view('customers.edit', [
+            'customer' => $customer,
+        ]);
+    }
+
+    public function update(Request $request, Klant $customer): RedirectResponse
+    {
+        $data = $this->validateCustomer($request);
+
+        $customer->update([
+            // we do NOT change klantnummer here
+            'bedrijfsnaam'   => $data['company_name'],
+            'contactpersoon' => $data['contact_person'] ?? null,
+            'adres'          => $this->composeAddress($data['street'] ?? null, $data['house_number'] ?? null),
+            'postcode'       => $data['postal_code'] ?? null,
+            'plaats'         => $data['city'] ?? null,
+            'telefoon'       => $data['phone'] ?? null,
+            'email'          => $data['email'],
+            'opmerkingen'    => $this->composeNotes($data),
+        ]);
+
+        return redirect()
+            ->route('customers.index')
+            ->with('status', __('Customer successfully updated.'));
+    }
+
+    public function destroy(Klant $customer): RedirectResponse
+    {
+        $customer->delete();
+
+        return redirect()
+            ->route('customers.index')
+            ->with('status', __('Customer successfully deleted.'));
+    }
+
+    /**
+     * Shared validation rules for create/update.
+     */
+    private function validateCustomer(Request $request): array
+    {
+        return $request->validate([
+            'company_name'   => ['required', 'string', 'max:200'],
+            'contact_person' => ['nullable', 'string', 'max:200'],
+            'email'          => ['required', 'email:rfc,dns', 'max:150'],
+            'phone'          => ['nullable', 'string', 'max:50'],
+            'street'         => ['nullable', 'string', 'max:255'],
+            'house_number'   => ['nullable', 'string', 'max:20'],
+            'postal_code'    => ['nullable', 'string', 'max:20'],
+            'city'           => ['nullable', 'string', 'max:100'],
+            'kvk_number'     => ['nullable', 'string', 'max:100'],
+            'vat_number'     => ['nullable', 'string', 'max:100'],
+            'credit_limit'   => ['nullable', 'numeric', 'min:0'],
+            'status'         => ['nullable', 'string', 'max:50'],
+            'notes'          => ['nullable', 'string', 'max:2000'],
+        ]);
     }
 
     private function generateCustomerNumber(): string
@@ -85,10 +129,12 @@ class CustomerController extends Controller
         }
 
         $meta = [
-            'Status' => $data['status'] ?? null,
-            'KvK' => $data['kvk_number'] ?? null,
-            'VAT' => $data['vat_number'] ?? null,
-            'Credit limit' => isset($data['credit_limit']) ? number_format((float) $data['credit_limit'], 2) : null,
+            'Status'       => $data['status'] ?? null,
+            'KvK'          => $data['kvk_number'] ?? null,
+            'VAT'          => $data['vat_number'] ?? null,
+            'Credit limit' => isset($data['credit_limit'])
+                ? number_format((float) $data['credit_limit'], 2)
+                : null,
         ];
 
         foreach ($meta as $label => $value) {
