@@ -2,6 +2,8 @@
 
 @section('content')
     <h1>Klanten</h1>
+    {{-- msg when klant added or edited --}}
+
     <!-- Add your content here -->
     <!-- maak overzicht van alle klanten -->
     <div class="overflow-x-auto bg-white shadow rounded-lg mt-6">
@@ -43,7 +45,7 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $k->opmerkingen }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
-                        <a href="{{ route('financien.edit', $k->klantnummer) }}" class="text-blue-600 hover:text-blue-900">Aanpassen</a>
+                        <a href="{{ route('financien.edit', $k->klant_id) }}" class="text-blue-600 hover:text-blue-900">Aanpassen</a>
                     </td>
                 </tr>
                 @endforeach

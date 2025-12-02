@@ -11,6 +11,8 @@ class Klant extends Model
 
     protected $table = 'klant';
     protected $primaryKey = 'klant_id';
+    public $incrementing = false;
+    protected $keyType = 'int';
     public $timestamps = true;
 
     protected $fillable = [
