@@ -42,6 +42,7 @@ class FinancienController extends Controller
         return view('financien.edit', compact('klant'));
     }
 
+
     public function update(Request $request, Klant $klant)
     {
         $klant->update([
@@ -60,6 +61,7 @@ class FinancienController extends Controller
         // Redirect back to the financien index with a success message
         return redirect()->route('financien.index')->with('success', 'Klantgegevens succesvol bijgewerkt.');
     }
+
 
     public function destroy($id)
     {

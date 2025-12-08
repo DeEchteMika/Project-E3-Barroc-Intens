@@ -6,14 +6,15 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InkoopController;
 use App\Http\Controllers\InkoopRegelController;
 use App\Http\Controllers\FinancienController;
+use App\Http\Controllers\KlantenserviceController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'auth.login');
 
 Route::view('/klantenservice', 'klantenservice.index')->name('klantenservice');
-Route::get('/klanten', [FinancienController::class, 'index'])->name('klanten');
-Route::get('/klantenservice/edit/{klant}', [FinancienController::class, 'editK'])->name('klantenservice.edit');
-Route::put('/klantenservice/{klant}', [FinancienController::class, 'updateK'])->name('klantenservice.update');
+Route::get('/klanten', [KlantenserviceController::class, 'index'])->name('klanten');
+Route::get('/klantenservice/{klant}/edit', [KlantenserviceController::class, 'edit'])->name('klantenservice.edit');
+Route::put('/klantenservice/{klant}', [KlantenserviceController::class, 'update'])->name('klantenservice.update');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
@@ -29,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('inkoop', [InkoopController::class, 'index'])->name('inkoop.index');
+    Route::get('inkoop', [InkoopController::class, 'indexF'])->name('inkoop.index');
     Route::get('inkoop/create', [InkoopController::class, 'create'])->name('inkoop.create');
     Route::post('inkoop', [InkoopController::class, 'store'])->name('inkoop.store');
     Route::delete('inkoop/{product}', [InkoopController::class, 'destroy'])->name('inkoop.destroy');
@@ -37,7 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::get('financien', [FinancienController::class, 'index'])->name('financien.index');
     Route::get('financien/create', [FinancienController::class, 'create'])->name('financien.create');
     Route::post('financien', [FinancienController::class, 'store'])->name('financien.store');
-    Route::get('financien/{klant}/edit', [FinancienController::class, 'edit'])->name('financien.edit');
+    Route::get('financien/{klant}/edit', [FinancienController::class, 'editF'])->name('financien.edit');
     Route::put('financien/{klant}', [FinancienController::class, 'update'])->name('financien.update');
 
     Route::get('/send-mail-test', [ProcessMailController::class, 'showForm'])->name('send.mail.form');
@@ -49,6 +50,6 @@ Route::middleware('auth')->group(function () {
     Route::view('/admin', 'admin.index')->name('admin');
 });
 
-Route::get('financien/{klant}/edit', [FinancienController::class, 'editF'])->name('financien.edit');
+// Route::get('financien/{klant}/edit', [FinancienController::class, 'editF'])->name('financien.edit');
 
 require __DIR__.'/auth.php';

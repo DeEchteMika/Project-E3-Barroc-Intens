@@ -62,7 +62,7 @@
                                 <td class="px-3 py-2">{{ $k->bkr_check }}</td>
                                 <td class="px-3 py-2 truncate" title="{{ $k->opmerkingen }}">{{ Str::limit($k->opmerkingen, 50) }}</td>
                                 <td class="px-3 py-2">
-                                    <a href="{{ route('financien.edit', $k->klant_id) }}" class="text-blue-600 hover:underline">Bewerken</a>
+                                    <a href="{{ route('klantenservice.edit', $k->klant_id) }}" class="text-blue-600 hover:underline">Bewerken</a>
                                 </td>
                             </tr>
                         @empty
