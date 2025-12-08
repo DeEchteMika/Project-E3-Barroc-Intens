@@ -82,9 +82,7 @@ class CustomerController extends Controller
             ->with('status', __('Customer successfully deleted.'));
     }
 
-    /**
-     * Shared validation rules for create/update.
-     */
+
     private function validateCustomer(Request $request): array
     {
         return $request->validate([

@@ -8,24 +8,20 @@ use App\Http\Controllers\InkoopRegelController;
 use App\Http\Controllers\FinancienController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::view('/', 'auth.login');
 
-Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::view('/klantenservice', 'klantenservice.index')->name('klantenservice');
+Route::get('/klanten', [FinancienController::class, 'index'])->name('klanten');
+Route::get('/klantenservice/edit/{klant}', [FinancienController::class, 'editK'])->name('klantenservice.edit');
+Route::put('/klantenservice/{klant}', [FinancienController::class, 'updateK'])->name('klantenservice.update');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/sales-dashboard', function () {
-        return view('sales.sales-dashboard');
-    })->name('sales.dashboard');
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::view('/sales-dashboard', 'sales.sales-dashboard')->name('sales.dashboard');
+    Route::get('/sales-create', [CustomerController::class, 'create'])->name('sales.create');
 
     Route::resource('customers', CustomerController::class)
-        ->only(['index', 'create', 'store']);
-
-    Route::get('/sales-create', [CustomerController::class, 'create'])
-        ->name('sales.create');
+        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 });
 
 Route::middleware('auth')->group(function () {
@@ -39,44 +35,20 @@ Route::middleware('auth')->group(function () {
     Route::delete('inkoop/{product}', [InkoopController::class, 'destroy'])->name('inkoop.destroy');
 
     Route::get('financien', [FinancienController::class, 'index'])->name('financien.index');
-    Route::get('financien/{klant}/edit', [FinancienController::class, 'edit'])->name('financien.edit');
     Route::get('financien/create', [FinancienController::class, 'create'])->name('financien.create');
     Route::post('financien', [FinancienController::class, 'store'])->name('financien.store');
+    Route::get('financien/{klant}/edit', [FinancienController::class, 'edit'])->name('financien.edit');
     Route::put('financien/{klant}', [FinancienController::class, 'update'])->name('financien.update');
 
     Route::get('/send-mail-test', [ProcessMailController::class, 'showForm'])->name('send.mail.form');
     Route::post('/send-mail-test', [ProcessMailController::class, 'send'])->name('send.mail.send');
+
+    Route::view('/sales', 'sales.index')->name('sales');
+    Route::view('/onderhoud', 'onderhoud.index')->name('onderhoud');
+    Route::view('/management', 'management.index')->name('management');
+    Route::view('/admin', 'admin.index')->name('admin');
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('customers', CustomerController::class)
-        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
-});
-
-Route::get('/klantenservice', function () {
-    return view('klantenservice.index');
-})->name('klantenservice');
-Route::get('/klanten', [FinancienController::class, 'index'])->name('klanten');
-
-Route::get('/sales', function () {
-    return view('sales.index');
-})->name('sales');
-
-Route::get('/klantenservice', function () {
-    return view('klantenservice.index');
-})->name('klantenservice');
-
-
-Route::get('/onderhoud', function () {
-    return view('onderhoud.index');
-})->name('onderhoud');
-
-Route::get('/management', function () {
-    return view('management.index');
-})->name('management');
-
-Route::get('/admin', function () {
-    return view('admin.index');
-})->name('admin');
+Route::get('financien/{klant}/edit', [FinancienController::class, 'editF'])->name('financien.edit');
 
 require __DIR__.'/auth.php';

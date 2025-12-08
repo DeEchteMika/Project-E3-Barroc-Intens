@@ -1,6 +1,0 @@
-use App\Http\Controllers\ProcessMailController;
-
-Route::middleware('auth')->group(function () {
-    Route::get('/send-mail-test', [ProcessMailController::class, 'showForm'])->name('send.mail.form');
-    Route::post('/send-mail-test', [ProcessMailController::class, 'send'])->name('send.mail.send');
-});
