@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::view('/onderhoud', 'onderhoud.index')->name('onderhoud');
     Route::view('/management', 'management.index')->name('management');
     Route::view('/admin', 'admin.index')->name('admin');
-    Route::resource('storingen', StoringsContoller::class)->only(['index', 'edit', 'update']);
+    Route::resource('storingen', StoringsContoller::class)->only(['index', 'edit', 'update'])->parameter('storingen', 'storing');
     Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin', [MedewerkersController::class, 'index'])->name('admin');
     Route::resource('medewerker', MedewerkersController::class);
