@@ -7,14 +7,10 @@ use App\Http\Controllers\InkoopController;
 use App\Http\Controllers\InkoopRegelController;
 use App\Http\Controllers\FinancienController;
 use App\Http\Controllers\KlantenserviceController;
+use App\Http\Controllers\MedewerkersController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'auth.login');
-
-Route::view('/klantenservice', 'klantenservice.index')->name('klantenservice');
-Route::get('/klanten', [KlantenserviceController::class, 'index'])->name('klanten');
-Route::get('/klantenservice/{klant}/edit', [KlantenserviceController::class, 'edit'])->name('klantenservice.edit');
-Route::put('/klantenservice/{klant}', [KlantenserviceController::class, 'update'])->name('klantenservice.update');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
@@ -38,8 +34,13 @@ Route::middleware('auth')->group(function () {
     Route::get('financien', [FinancienController::class, 'index'])->name('financien.index');
     Route::get('financien/create', [FinancienController::class, 'create'])->name('financien.create');
     Route::post('financien', [FinancienController::class, 'store'])->name('financien.store');
-    Route::get('financien/{klant}/edit', [FinancienController::class, 'editF'])->name('financien.edit');
+    Route::get('financien/{klant}/edit', [FinancienController::class, 'edit'])->name('financien.edit');
     Route::put('financien/{klant}', [FinancienController::class, 'update'])->name('financien.update');
+
+    Route::view('/klantenservice', 'klantenservice.index')->name('klantenservice');
+    Route::get('/klanten', [KlantenserviceController::class, 'index'])->name('klanten');
+    Route::get('/klantenservice/{klant}/edit', [KlantenserviceController::class, 'edit'])->name('klantenservice.edit');
+    Route::put('/klantenservice/{klant}', [KlantenserviceController::class, 'update'])->name('klantenservice.update');
 
     Route::get('/send-mail-test', [ProcessMailController::class, 'showForm'])->name('send.mail.form');
     Route::post('/send-mail-test', [ProcessMailController::class, 'send'])->name('send.mail.send');
@@ -48,6 +49,10 @@ Route::middleware('auth')->group(function () {
     Route::view('/onderhoud', 'onderhoud.index')->name('onderhoud');
     Route::view('/management', 'management.index')->name('management');
     Route::view('/admin', 'admin.index')->name('admin');
+    Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/admin', [MedewerkersController::class, 'index'])->name('admin');
+    Route::resource('medewerker', MedewerkersController::class);
+});
 });
 
 // Route::get('financien/{klant}/edit', [FinancienController::class, 'editF'])->name('financien.edit');
