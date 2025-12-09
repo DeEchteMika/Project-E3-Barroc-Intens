@@ -48,5 +48,6 @@ class StoringSeeder extends Seeder
         foreach ($storingen as $storing) {
             Storing::updateOrCreate(['naam' => $storing['naam']], $storing);
         }
+        Storing::factory()->count(20)->create();
     }
 }
