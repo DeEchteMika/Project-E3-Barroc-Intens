@@ -53,7 +53,15 @@ class User extends Authenticatable
 
     public function storings()
     {
-        return $this->hasMany(Storing::class, 'monteur', 'id');
+        // Reach storingen assigned to this user via the gekoppelde medewerker/monteur record
+        return $this->hasManyThrough(
+            Storing::class,
+            Medewerker::class,
+            'user_id',      // Medewerker column
+            'monteur_id',   // Storing column
+            'id',           // User column
+            'medewerker_id' // Medewerker primary key
+        );
     }
     /**
      * Check if the user has at least the given toegangsniveau.

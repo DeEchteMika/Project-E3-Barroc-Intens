@@ -21,15 +21,15 @@ class Storing extends Model
         'bedrijf',
         'datum',
         'klant_id',
-        'monteur',
+        'monteur_id',
     ];
     public function klant()
     {
         return $this->belongsTo(Klant::class, 'klant_id', 'klant_id');
     }
 
-    public function medewerker()
+    public function monteur()
     {
-        return $this->belongsTo(User::class, 'monteur_id', 'id');
+        return $this->belongsTo(Medewerker::class, 'monteur_id', 'medewerker_id');
     }
 }

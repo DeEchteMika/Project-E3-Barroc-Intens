@@ -8,6 +8,7 @@ use App\Http\Controllers\InkoopRegelController;
 use App\Http\Controllers\FinancienController;
 use App\Http\Controllers\KlantenserviceController;
 use App\Http\Controllers\MedewerkersController;
+use App\Http\Controllers\StoringsContoller;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'auth.login');
@@ -49,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::view('/onderhoud', 'onderhoud.index')->name('onderhoud');
     Route::view('/management', 'management.index')->name('management');
     Route::view('/admin', 'admin.index')->name('admin');
+    Route::resource('storingen', StoringsContoller::class)->only(['index', 'edit', 'update']);
     Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin', [MedewerkersController::class, 'index'])->name('admin');
     Route::resource('medewerker', MedewerkersController::class);

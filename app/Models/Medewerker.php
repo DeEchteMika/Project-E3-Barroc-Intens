@@ -49,4 +49,9 @@ class Medewerker extends Model
     {
         return $this->hasMany(Bericht::class, 'ontvanger_id', 'medewerker_id');
     }
+
+    public function storingen()
+    {
+        return $this->hasMany(Storing::class, 'monteur_id', 'medewerker_id');
+    }
 }

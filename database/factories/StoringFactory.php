@@ -25,8 +25,8 @@ class StoringFactory extends Factory
             'locatie' => $this->faker->address(),
             'bedrijf' => $this->faker->company(),
             'datum' => $this->faker->dateTimeBetween('-1 week', 'now'),
-            'klant_id' => Klant::factory(),
-            'monteur' => null,
+            'klant_id' => Klant::inRandomOrder()->first()->klant_id,
+            'monteur_id' => null,
         ];
     }
 }
