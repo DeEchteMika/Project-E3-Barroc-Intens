@@ -50,6 +50,11 @@ class User extends Authenticatable
     {
         return $this->hasOne(\App\Models\Medewerker::class, 'user_id', 'id');
     }
+
+    public function storings()
+    {
+        return $this->hasMany(Storing::class, 'monteur', 'id');
+    }
     /**
      * Check if the user has at least the given toegangsniveau.
      *

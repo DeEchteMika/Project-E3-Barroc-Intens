@@ -40,6 +40,11 @@ class Klant extends Model
         return $this->hasMany(Factuur::class, 'klant_id', 'klant_id');
     }
 
+    public function storing()
+    {
+        return $this->hasMany(Storing::class, 'klant_id', 'klant_id');
+    }
+
     protected static function booted()
     {
         static::updated(function ($klant) {
