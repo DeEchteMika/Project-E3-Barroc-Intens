@@ -12,7 +12,7 @@ class CreateMedewerkerTable extends Migration
             $table->increments('medewerker_id');
             $table->string('voornaam', 100);
             $table->string('achternaam', 100);
-            $table->string('functie', 100)->nullable();
+            $table->enum('functie', ['Medewerker', 'Monteur', 'Hoofd Financiële Administratie', 'Hoofd Sales', 'Hoofd Inkoop', 'Hoofd Maintenance'])->nullable()->default('Medewerker');
             $table->unsignedInteger('afdeling_id')->nullable();
             $table->string('email', 150)->nullable();
             $table->string('telefoon', 50)->nullable();
