@@ -77,7 +77,7 @@ class MedewerkersController extends Controller
         $data = $request->validate([
             'voornaam' => ['required', 'string', 'max:100'],
             'achternaam' => ['required', 'string', 'max:100'],
-            'functie' => ['nullable', 'string', 'max:100'],
+            'functie' => ['nullable', Rule::in(['Medewerker', 'Monteur', 'Hoofd Financiële Administratie', 'Hoofd Sales', 'Hoofd Inkoop', 'Hoofd Maintenance'])],
             'email' => ['required', 'email', 'max:150', 'unique:users,email'],
             'telefoon' => ['nullable', 'string', 'max:50'],
             'rechten_id' => ['required', 'exists:rechten,rechten_id'],
@@ -145,7 +145,7 @@ class MedewerkersController extends Controller
         $data = $request->validate([
             'voornaam' => ['required', 'string', 'max:100'],
             'achternaam' => ['required', 'string', 'max:100'],
-            'functie' => ['nullable', 'string', 'max:100'],
+            'functie' => ['nullable', Rule::in(['Medewerker', 'Monteur', 'Hoofd Financiële Administratie', 'Hoofd Sales', 'Hoofd Inkoop', 'Hoofd Maintenance'])],
             'email' => [
                 'required',
                 'email',

@@ -29,7 +29,14 @@
 
         <div class="mb-4">
             <label for="functie" class="block text-sm font-medium text-gray-700">Functie</label>
-            <input type="text" name="functie" id="functie" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" value="{{ old('functie') }}">
+            <select name="functie" id="functie" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                <option value="Medewerker" @selected(old('functie', 'Medewerker') == 'Medewerker')>Medewerker</option>
+                <option value="Monteur" @selected(old('functie') == 'Monteur')>Monteur</option>
+                <option value="Hoofd Financiële Administratie" @selected(old('functie') == 'Hoofd Financiële Administratie')>Hoofd Financiële Administratie</option>
+                <option value="Hoofd Sales" @selected(old('functie') == 'Hoofd Sales')>Hoofd Sales</option>
+                <option value="Hoofd Inkoop" @selected(old('functie') == 'Hoofd Inkoop')>Hoofd Inkoop</option>
+                <option value="Hoofd Maintenance" @selected(old('functie') == 'Hoofd Maintenance')>Hoofd Maintenance</option>
+            </select>
         </div>
 
         <div class="mb-4">
