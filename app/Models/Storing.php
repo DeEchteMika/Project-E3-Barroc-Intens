@@ -30,6 +30,6 @@ class Storing extends Model
 
     public function medewerker()
     {
-        return $this->belongsTo(User::class, 'monteur', 'id');
+        return $this->belongsTo(User::class, 'monteur_id', 'id');
     }
 }
