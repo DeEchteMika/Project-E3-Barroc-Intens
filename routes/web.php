@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('inkoop', [InkoopController::class, 'indexF'])->name('inkoop.index');
+    Route::get('inkoop', [InkoopController::class, 'index'])->name('inkoop.index');
     Route::get('inkoop/create', [InkoopController::class, 'create'])->name('inkoop.create');
     Route::post('inkoop', [InkoopController::class, 'store'])->name('inkoop.store');
     Route::delete('inkoop/{product}', [InkoopController::class, 'destroy'])->name('inkoop.destroy');
