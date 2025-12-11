@@ -10,8 +10,27 @@ class StoringsContoller extends Controller
 {
 	public function index()
 	{
-		$storingen = Storing::with(['klant', 'monteur'])
-			->orderByDesc('created_at')
+		$user = auth()->user();
+		$medewerker = $user->medewerker;
+
+		// Controleer of user toegang heeft tot deze pagina
+		if (!$medewerker) {
+			abort(403, 'U hebt geen toegang tot deze pagina.');
+		}
+
+		// Bepaal of het een leidinggevende is (management, onderhoud, admin)
+		$isManager = in_array(strtolower($medewerker->functie), ['management', 'onderhoud', 'admin']);
+
+		// Haal storingen op
+		$query = Storing::with(['klant', 'monteur']);
+
+		// Monteurs zien alleen hun eigen storingen
+		if (!$isManager) {
+			$query->where('monteur_id', $medewerker->medewerker_id);
+		}
+		// Managers/Admin/Hooft Onderhoud zien ALLE storingen
+
+		$storingen = $query->orderByDesc('created_at')
 			->paginate(15);
 
 		return view('onderhoud.storingen', compact('storingen'));
@@ -26,6 +45,11 @@ class StoringsContoller extends Controller
 			->get();
 
 		return view('onderhoud.storingen-edit', compact('storing', 'monteurs'));
+	}
+
+	public function show(Storing $storing)
+	{
+		return view('onderhoud.storingen-show', compact('storing'));
 	}
 
 	public function update(Request $request, Storing $storing)

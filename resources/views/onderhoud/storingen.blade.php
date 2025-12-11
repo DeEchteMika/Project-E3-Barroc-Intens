@@ -32,7 +32,8 @@
                         {{ optional($s->monteur)->voornaam ? $s->monteur->voornaam . ' ' . $s->monteur->achternaam : 'Nog niet toegewezen' }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                        <a href="{{ route('storingen.edit', $s->storing_id) }}" class="text-blue-600 hover:text-blue-900">Wijzig monteur/status</a>
+                        <a href="{{ route('storingen.show', $s->storing_id) }}" class="text-blue-600 hover:text-blue-900 mr-4">Bekijk</a>
+                        <a href="{{ route('storingen.edit', $s->storing_id) }}" class="text-blue-600 hover:text-blue-900">Wijzig</a>
                     </td>
                 </tr>
                 @endforeach

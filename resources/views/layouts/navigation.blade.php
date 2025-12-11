@@ -29,8 +29,10 @@
                     <x-nav-link :href="route('onderhoud')" :active="request()->routeIs('onderhoud')">
                         {{ __('Onderhoud') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('storingen.index')" :active="request()->routeIs('storingen.*')">
+                        {{ __('Storingen') }}
+                    </x-nav-link>
                     @endcanAccess
-
                     @canAccess('sales')
                     <x-nav-link :href="route('sales.dashboard')" :active="request()->routeIs('sales.*')">
                         {{ __('Sales') }}
