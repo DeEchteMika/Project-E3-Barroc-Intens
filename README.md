@@ -1,10 +1,22 @@
 # Project-E3-Barroc-Intens
 Project E3
 
-copy env.example naar .env en vul eigen data in
+1. Clone het project
 
-in de terminal voer je de volgende commando's uit:
-1. npm install
-2. composer install
-3. php artisan key:generate
-4. php artisan migrate:fresh --seed
+2. Environment instellen
+cp .env.example .env
+
+3. Dependencies installeren
+composer install
+npm install
+
+4. Laravel configureren
+php artisan key:generate
+php artisan migrate:fresh --seed
+
+5. Frontend bouwen
+npm run dev
+
+6. inloggen op de site
+Email: management@example.com
+wachtwoord: password
