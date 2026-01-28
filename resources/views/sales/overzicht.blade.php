@@ -2,7 +2,6 @@
 
 @section('content')
 
-background-color: #f9fafb;
 <div class="max-w-7xl mx-auto py-8 px-4">
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-semibold text-gray-900">Producten paginas</h1>
@@ -22,6 +21,7 @@ background-color: #f9fafb;
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Naam</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prijs</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Voorraad</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
                     {{-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acties</th> --}}
                 </tr>
             </thead>
@@ -33,6 +33,9 @@ background-color: #f9fafb;
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $p->naam }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">€ {{ number_format($p->prijs ?? 0,2,',','.') }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $p->voorraad ?? 0 }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                        <a href="{{ route('sales.productdetails', $p->product_id) }}" class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">Bekijk details</a>
+                    </td>
                     {{-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                         <form action="{{ route('inkoop.destroy', $p) }}" method="POST" onsubmit="return confirm('Weet je het zeker?');" class="inline-block">
                             @csrf
