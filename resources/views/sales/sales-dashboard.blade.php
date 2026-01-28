@@ -160,17 +160,17 @@
                         </div>
                         <div class="p-6 space-y-3">
                             <a href="#"
-                               class="flex items-center justify-between px-3 py-2 rounded-md border border-gray-200 text-sm text-gray-800 hover:bg-gray-50">
+                                class="flex items-center justify-between px-3 py-2 rounded-md border border-gray-200 text-sm text-gray-800 hover:bg-gray-50">
                                 <span>{{ __('Create new quote') }}</span>
                                 <span class="text-xs text-gray-400">Q</span>
                             </a>
-                            <a href="#"
-                               class="flex items-center justify-between px-3 py-2 rounded-md border border-gray-200 text-sm text-gray-800 hover:bg-gray-50">
-                                <span>{{ __('Log a follow-up call') }}</span>
+                            <a href="{{ route('sales.overzicht') }}"
+                                class="flex items-center justify-between px-3 py-2 rounded-md border border-gray-200 text-sm text-gray-800 hover:bg-gray-50">
+                                <span>{{ __('Overview Products') }}</span>
                                 <span class="text-xs text-gray-400">C</span>
                             </a>
                             <a href="{{ route('customers.create') }}"
-                               class="flex items-center justify-between px-3 py-2 rounded-md border border-gray-200 text-sm text-gray-800 hover:bg-gray-50">
+                                class="flex items-center justify-between px-3 py-2 rounded-md border border-gray-200 text-sm text-gray-800 hover:bg-gray-50">
                                 <span>{{ __('Add new customer') }}</span>
                                 <span class="text-xs text-gray-400">N</span>
                             </a>
