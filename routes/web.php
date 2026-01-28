@@ -4,11 +4,11 @@ use App\Http\Controllers\ProcessMailController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InkoopController;
-use App\Http\Controllers\InkoopRegelController;
 use App\Http\Controllers\FinancienController;
 use App\Http\Controllers\KlantenserviceController;
 use App\Http\Controllers\MedewerkersController;
 use App\Http\Controllers\StoringsContoller;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'auth.login');
@@ -17,7 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::view('/sales-dashboard', 'sales.sales-dashboard')->name('sales.dashboard');
     Route::get('/sales-create', [CustomerController::class, 'create'])->name('sales.create');
-    Route::get('/sales-overzicht', [CustomerController::class, 'index'])->name('sales.overzicht');
+    Route::get('/sales-overzicht', [ProductController::class, 'index'])->name('sales.overzicht');
 
     Route::resource('customers', CustomerController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
