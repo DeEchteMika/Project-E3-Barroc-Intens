@@ -17,6 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::view('/sales-dashboard', 'sales.sales-dashboard')->name('sales.dashboard');
     Route::get('/sales-create', [CustomerController::class, 'create'])->name('sales.create');
+    Route::get('/sales-overzicht', [CustomerController::class, 'index'])->name('sales.overzicht');
 
     Route::resource('customers', CustomerController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
