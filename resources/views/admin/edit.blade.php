@@ -85,5 +85,24 @@
             <a href="{{ route('admin') }}" class="ml-3 text-sm text-gray-600">Annuleer</a>
         </div>
     </form>
+
+    @if($medewerker->user)
+    <div class="mt-8 pt-6 border-t border-gray-200">
+        <h2 class="text-lg font-semibold mb-4">Wachtwoord Reset</h2>
+        <p class="text-sm text-gray-600 mb-4">
+            Verstuur een wachtwoord reset e-mail naar <strong>{{ $medewerker->email }}</strong>.
+            De medewerker ontvangt een link om een nieuw wachtwoord in te stellen.
+        </p>
+        <form action="{{ route('medewerker.sendResetEmail', $medewerker->medewerker_id) }}" method="POST" onsubmit="return confirm('Weet u zeker dat u een wachtwoord reset mail wilt versturen?');">
+            @csrf
+            <button type="submit" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+                Wachtwoord Reset Mail Versturen
+            </button>
+        </form>
+    </div>
+    @endif
 </div>
 @endsection

@@ -18,6 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/sales-dashboard', 'sales.sales-dashboard')->name('sales.dashboard');
     Route::get('/sales-create', [CustomerController::class, 'create'])->name('sales.create');
     Route::get('/sales-overzicht', [ProductController::class, 'index'])->name('sales.overzicht');
+    Route::get('/sales-productdetails/{id}', [ProductController::class, 'show'])->name('sales.productdetails');
 
     Route::resource('customers', CustomerController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
@@ -34,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('inkoop/{product}', [InkoopController::class, 'destroy'])->name('inkoop.destroy');
     Route::get('inkoop/{product}/edit', [InkoopController::class, 'edit'])->name('inkoop.edit');
     Route::put('inkoop/{product}', [InkoopController::class, 'update'])->name('inkoop.update');
+    Route::get('inkoop/{product}', [InkoopController::class, 'show'])->name('inkoop.show');
+
 
     Route::get('financien', [FinancienController::class, 'index'])->name('financien.index');
     Route::get('financien/create', [FinancienController::class, 'create'])->name('financien.create');
@@ -57,6 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin', [MedewerkersController::class, 'index'])->name('admin');
     Route::resource('medewerker', MedewerkersController::class);
+    Route::post('/medewerker/{id}/send-reset-email', [MedewerkersController::class, 'sendResetEmail'])->name('medewerker.sendResetEmail');
 });
 });
 
