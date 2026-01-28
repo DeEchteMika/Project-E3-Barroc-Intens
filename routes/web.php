@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::get('inkoop/create', [InkoopController::class, 'create'])->name('inkoop.create');
     Route::post('inkoop', [InkoopController::class, 'store'])->name('inkoop.store');
     Route::delete('inkoop/{product}', [InkoopController::class, 'destroy'])->name('inkoop.destroy');
+    Route::get('inkoop/{product}/edit', [InkoopController::class, 'edit'])->name('inkoop.edit');
+    Route::put('inkoop/{product}', [InkoopController::class, 'update'])->name('inkoop.update');
 
     Route::get('financien', [FinancienController::class, 'index'])->name('financien.index');
     Route::get('financien/create', [FinancienController::class, 'create'])->name('financien.create');
@@ -50,7 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::view('/onderhoud', 'onderhoud.index')->name('onderhoud');
     Route::view('/management', 'management.index')->name('management');
     Route::view('/admin', 'admin.index')->name('admin');
-    Route::resource('storingen', StoringsContoller::class)->only(['index', 'show', 'edit', 'update'])->parameter('storingen', 'storing');
+    Route::resource('storingen', StoringsContoller::class)->only(['index', 'show', 'edit', 'update', 'create', 'destroy'])->parameter('storingen', 'storing');
     Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin', [MedewerkersController::class, 'index'])->name('admin');
     Route::resource('medewerker', MedewerkersController::class);

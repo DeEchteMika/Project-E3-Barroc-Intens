@@ -37,6 +37,7 @@
                             @method('DELETE')
                             <button class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Verwijderen</button>
                         </form>
+                        <a href="{{ route('inkoop.edit', $p) }}" class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">Bewerken</a>
                     </td>
                 </tr>
                 @endforeach

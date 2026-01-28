@@ -44,6 +44,35 @@ class InkoopController extends Controller
         return redirect()->route('inkoop.index')->with('success', 'Product aangemaakt');
     }
 
+    public function edit(Product $product)
+    {
+        return view('inkoop.edit', compact('product'));
+    }
+
+    public function update(Request $request, Product $product)
+    {
+        $request->validate([
+            'productnummer' => 'required|string|max:50|unique:product,productnummer,' . $product->product_id,
+            'naam' => 'required|string|max:200',
+            'omschrijving' => 'nullable|string',
+            'prijs' => 'nullable|numeric',
+            'voorraad' => 'nullable|integer',
+            'heeft_maler' => 'nullable|boolean',
+        ]);
+
+        $product->update([
+            'productnummer' => $request->productnummer,
+            'naam' => $request->naam,
+            'omschrijving' => $request->omschrijving,
+            'prijs' => $request->prijs ?? 0,
+            'voorraad' => $request->voorraad ?? 0,
+            'heeft_maler' => $request->has('heeft_maler') ? (bool) $request->heeft_maler : false,
+        ]);
+
+        return redirect()->route('inkoop.index')->with('success', 'Product bijgewerkt');
+    }
+
+
     // Delete a product
     public function destroy(Product $product)
     {
