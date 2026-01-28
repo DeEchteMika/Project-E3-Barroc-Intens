@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WachtwoordReset;
 
 class MedewerkersController extends Controller
 {
@@ -87,7 +90,8 @@ class MedewerkersController extends Controller
 
         $actief = array_key_exists('actief', $data) ? (bool) $data['actief'] : true;
 
-        DB::transaction(function () use ($data, $actief) {
+        $user = null;
+        DB::transaction(function () use ($data, $actief, &$user) {
             $user = User::create([
                 'name' => trim($data['voornaam'] . ' ' . $data['achternaam']),
                 'email' => $data['email'],
@@ -106,7 +110,15 @@ class MedewerkersController extends Controller
             ]);
         });
 
-        return redirect()->route('admin')->with('status', 'Medewerker aangemaakt.');
+        // Stuur automatisch een wachtwoord reset mail
+        if ($user) {
+            $token = Password::broker()->createToken($user);
+            Mail::to($user->email)->send(
+                new WachtwoordReset($token, $user->email, $user->name)
+            );
+        }
+
+        return redirect()->route('admin')->with('status', 'Medewerker aangemaakt en wachtwoord reset mail verstuurd.');
     }
 
     /**
@@ -205,5 +217,28 @@ class MedewerkersController extends Controller
         });
 
         return redirect()->route('admin')->with('status', 'Medewerker verwijderd.');
+    }
+
+    /**
+     * Send password reset email to the medewerker.
+     */
+    public function sendResetEmail(string $id)
+    {
+        $this->authorizeAdminOrManagement();
+
+        $medewerker = Medewerker::with('user')->findOrFail($id);
+
+        if (!$medewerker->user) {
+            return redirect()->back()->with('error', 'Geen gebruikersaccount gevonden voor deze medewerker.');
+        }
+
+        $user = $medewerker->user;
+        $token = Password::broker()->createToken($user);
+        
+        Mail::to($user->email)->send(
+            new WachtwoordReset($token, $user->email, $user->name)
+        );
+
+        return redirect()->back()->with('status', 'Wachtwoord reset mail verstuurd naar ' . $user->email);
     }
 }
