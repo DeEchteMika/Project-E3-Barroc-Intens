@@ -36,6 +36,37 @@ class StoringsContoller extends Controller
 
 		return view('onderhoud.storingen', compact('storingen'));
 	}
+    public function create()
+    {
+        $klanten = \App\Models\Klant::orderBy('bedrijfsnaam')->get();
+        $monteurs = Medewerker::where('functie', 'Monteur')
+            ->where('actief', true)
+            ->orderBy('achternaam')
+            ->orderBy('voornaam')
+            ->get();
+
+        return view('onderhoud.storingen-create', compact('klanten', 'monteurs'));
+    }
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'naam' => 'required|string|max:255',
+            'beschrijving' => 'required|string',
+            'status' => 'required|in:open,in behandeling,opgelost',
+            'locatie' => 'nullable|string|max:255',
+            'bedrijf' => 'nullable|string|max:255',
+            'datum' => 'nullable|date',
+            'klant_id' => 'required|exists:klant,klant_id',
+            'monteur_id' => 'nullable|exists:medewerker,medewerker_id',
+        ]);
+
+        // Maak nieuwe storing aan
+        Storing::create($data);
+
+        return redirect()
+            ->route('storingen.index')
+            ->with('success', 'Nieuwe storing aangemaakt.');
+    }
 
 	public function edit(Storing $storing)
 	{
