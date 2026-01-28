@@ -20,6 +20,11 @@ class InkoopController extends Controller
         return view('inkoop.create');
     }
 
+    public function show(Product $product)
+    {
+        return view('inkoop.show', compact('product'));
+    }
+
     // Store a new product in the database
     public function store(Request $request)
     {
@@ -52,7 +57,7 @@ class InkoopController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'productnummer' => 'required|string|max:50|unique:product,productnummer,' . $product->product_id,
+            'productnummer' => 'required|string|max:50|unique:product,productnummer,' . $product->product_id . ',product_id',
             'naam' => 'required|string|max:200',
             'omschrijving' => 'nullable|string',
             'prijs' => 'nullable|numeric',
@@ -71,6 +76,8 @@ class InkoopController extends Controller
 
         return redirect()->route('inkoop.index')->with('success', 'Product bijgewerkt');
     }
+
+
 
 
     // Delete a product

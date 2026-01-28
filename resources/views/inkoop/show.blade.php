@@ -1,54 +1,43 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>Inkoop #{{ $inkoop->inkoop_id }}</h1>
-    <p>Datum: {{ $inkoop->datum }}</p>
-    <p>Medewerker: {{ optional($inkoop->medewerker)->voornaam ?? '-' }}</p>
-    <p>Totaal: € {{ number_format($inkoop->totaalbedrag ?? 0,2,',','.') }}</p>
 
-    <h4>Productregels</h4>
-    <table class="table">
-        <thead><tr><th>Product</th><th>Aantal</th><th>Prijs p/st</th><th>Subtotaal</th><th>Acties</th></tr></thead>
-        <tbody>
-            @foreach($inkoop->regels as $regel)
-            <tr>
-                <td>{{ optional($regel->product)->naam ?? '-' }}</td>
-                <td>{{ $regel->aantal }}</td>
-                <td>€ {{ number_format($regel->prijs_per_stuk ?? 0,2,',','.') }}</td>
-                <td>€ {{ number_format($regel->subtotaal ?? 0,2,',','.') }}</td>
-                <td>
-                    <form action="{{ route('inkoop.regel.destroy', ['inkoop' => $inkoop->inkoop_id, 'regel' => $regel->inkoopregel_id ?? $regel->id]) }}" method="POST" style="display:inline-block;">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-sm btn-danger" onclick="return confirm('Verwijder regel?')">Verwijder</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+<div class="max-w-3xl mx-auto py-8 px-4">
+    <h1 class="text-2xl font-semibold mb-4">Product details</h1>
 
-    <h4>Product toevoegen</h4>
-    <form action="{{ route('inkoop.regel.store', $inkoop->inkoop_id) }}" method="POST">
-        @csrf
-        <div class="row">
-            <div class="col-md-6">
-                <select name="product_id" class="form-control">
-                    @foreach($products as $p)
-                        <option value="{{ $p->product_id }}">{{ $p->naam }} ({{ $p->productnummer }}) - €{{ number_format($p->prijs ?? 0,2,',','.') }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-3">
-                <input type="number" name="aantal" value="1" min="1" class="form-control">
-            </div>
-            <div class="col-md-3">
-                <button class="btn btn-primary">Voeg toe</button>
-            </div>
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="mb-4">
+            <h2 class="text-lg font-medium text-gray-900">Productnummer:</h2>
+            <p class="text-gray-700">{{ $product->productnummer }}</p>
         </div>
-    </form>
 
-    <p class="mt-3"><a href="{{ route('inkoop.index') }}">Terug naar overzicht</a></p>
-</div>
+        <div class="mb-4">
+            <h2 class="text-lg font-medium text-gray-900">Naam:</h2>
+            <p class="text-gray-700">{{ $product->naam }}</p>
+        </div>
+
+        <div class="mb-4">
+            <h2 class="text-lg font-medium text-gray-900">Omschrijving:</h2>
+            <p class="text-gray-700">{{ $product->omschrijving }}</p>
+        </div>
+
+        <div class="mb-4">
+            <h2 class="text-lg font-medium text-gray-900">Prijs:</h2>
+            <p class="text-gray-700">€ {{ number_format($product->prijs ?? 0, 2, ',', '.') }}</p>
+        </div>
+
+        <div class="mb-4">
+            <h2 class="text-lg font-medium text-gray-900">Voorraad:</h2>
+            <p class="text-gray-700">{{ $product->voorraad ?? 0 }}</p>
+        </div>
+
+        <div>
+            <h2 class="text-lg font-medium text-gray-900">Heeft maler:</h2>
+            <p class="text-gray-700">{{ $product->heeft_maler ? 'Ja' : 'Nee' }}</p>
+        </div>
+    </div>
+
+    <div class="mt-6">
+        <a href="{{ route('inkoop.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-md hover:bg-gray-700">Terug naar lijst</a>
+    </div>
 @endsection

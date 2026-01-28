@@ -32,12 +32,15 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">€ {{ number_format($p->prijs ?? 0,2,',','.') }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $p->voorraad ?? 0 }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+
+                        <a href="{{ route('inkoop.show', $p) }}" class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">Bekijken</a>
+                        <a href="{{ route('inkoop.edit', $p) }}" class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">Bewerken</a>
                         <form action="{{ route('inkoop.destroy', $p) }}" method="POST" onsubmit="return confirm('Weet je het zeker?');" class="inline-block">
                             @csrf
                             @method('DELETE')
                             <button class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Verwijderen</button>
                         </form>
-                        <a href="{{ route('inkoop.edit', $p) }}" class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600">Bewerken</a>
+
                     </td>
                 </tr>
                 @endforeach
