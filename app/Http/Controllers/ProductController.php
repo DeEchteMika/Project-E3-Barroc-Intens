@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
@@ -11,7 +12,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        
+        $products = Product::orderBy('naam')->get();
+        return view('sales.overzicht', compact('products'));
     }
 
     /**
@@ -35,7 +37,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
     }
 
     /**
