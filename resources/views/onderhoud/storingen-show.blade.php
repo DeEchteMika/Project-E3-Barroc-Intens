@@ -6,6 +6,10 @@
         <a href="{{ route('storingen.index') }}" class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">Terug naar lijst</a>
     </div>
 
+    @if(session('success'))
+        <div class="mb-4 p-3 rounded bg-green-50 border border-green-200 text-green-800">{{ session('success') }}</div>
+    @endif
+
     <div class="bg-white shadow rounded-lg overflow-hidden">
         <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
             <h2 class="text-lg font-semibold text-gray-900">{{ $storing->naam }}</h2>
@@ -92,10 +96,63 @@
             </div>
         </div>
 
+        <!-- Onderhoud Werkzaamheden -->
+        @if($storing->onderhoudswerk)
+            <div class="px-6 py-6 border-t border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Onderhoud Werkzaamheden</h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Storingscode</label>
+                        <p class="text-gray-900">{{ $storing->onderhoudswerk->storingscode ?? 'N/A' }}</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Datum Onderhoud</label>
+                        <p class="text-gray-900">{{ $storing->onderhoudswerk->datum ? $storing->onderhoudswerk->datum->format('d-m-Y H:i') : 'N/A' }}</p>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Opmerkingen</label>
+                        <p class="text-gray-900">{{ $storing->onderhoudswerk->opmerkingen ?? 'N/A' }}</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Status Werkzaamheden</label>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <input type="checkbox" disabled @checked($storing->onderhoudswerk->checklist_voltooid) class="rounded">
+                                <span class="ml-2 text-sm text-gray-700">Checklist voltooid</span>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" disabled @checked($storing->onderhoudswerk->storing_verholpen) class="rounded">
+                                <span class="ml-2 text-sm text-gray-700">Storing verholpen</span>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" disabled @checked($storing->onderhoudswerk->goedgekeurd) class="rounded">
+                                <span class="ml-2 text-sm text-gray-700">Goedgekeurd</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if($storing->onderhoudswerk->handtekening_url)
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Handtekening</label>
+                            <a href="{{ $storing->onderhoudswerk->handtekening_url }}" target="_blank" class="text-blue-600 hover:text-blue-900">Bekijk afbeelding →</a>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @else
+            <div class="px-6 py-6 border-t border-gray-200">
+                <p class="text-gray-600">Nog geen onderhoud werkzaamheden geregistreerd.</p>
+            </div>
+        @endif
+
         <!-- Acties -->
         <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex gap-3">
             <a href="{{ route('storingen.edit', $storing->storing_id) }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                Wijzig monteur/status
+                Werkzaamheden bijwerken
             </a>
             <a href="{{ route('storingen.index') }}" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
                 Terug

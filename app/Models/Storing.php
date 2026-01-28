@@ -32,4 +32,9 @@ class Storing extends Model
     {
         return $this->belongsTo(Medewerker::class, 'monteur_id', 'medewerker_id');
     }
+
+    public function onderhoudswerk()
+    {
+        return $this->hasOne(Onderhoud::class, 'storingscode', 'storing_id');
+    }
 }
