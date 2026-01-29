@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::get('inkoop', [InkoopController::class, 'index'])->name('inkoop.index');
     Route::get('inkoop/create', [InkoopController::class, 'create'])->name('inkoop.create');
     Route::post('inkoop', [InkoopController::class, 'store'])->name('inkoop.store');
+    Route::post('inkoop/{product}/restock', [InkoopController::class, 'restock'])->name('inkoop.restock');
     Route::delete('inkoop/{product}', [InkoopController::class, 'destroy'])->name('inkoop.destroy');
     Route::get('inkoop/{product}/edit', [InkoopController::class, 'edit'])->name('inkoop.edit');
     Route::put('inkoop/{product}', [InkoopController::class, 'update'])->name('inkoop.update');
