@@ -12,6 +12,7 @@ class InkoopController extends Controller
     {
         $products = Product::orderBy('naam')->get();
         return view('inkoop.index', compact('products'));
+
     }
 
     // Form to create a new product
@@ -23,6 +24,20 @@ class InkoopController extends Controller
     public function show(Product $product)
     {
         return view('inkoop.show', compact('product'));
+    }
+
+    public function restock(Request $request, Product $product)
+    {
+        $request->validate([
+            'hoeveelheid' => 'required|integer|min:1',
+        ]);
+
+        $product->update([
+            'voorraad' => $product->voorraad + $request->hoeveelheid,
+        ]);
+
+        return redirect()->route('inkoop.show', $product->product_id)->with('success', 'Voorraad bijgewerkt naar ' . $product->voorraad);
+
     }
 
     // Store a new product in the database
@@ -73,6 +88,13 @@ class InkoopController extends Controller
             'voorraad' => $request->voorraad ?? 0,
             'heeft_maler' => $request->has('heeft_maler') ? (bool) $request->heeft_maler : false,
         ]);
+        $threshold = config('inkoop.threshold', 5);
+        $restockAmount = config('inkoop.restock_amount', 20);
+
+        if ($product->voorraad < $threshold) {
+
+            $product->increment('voorraad', $restockAmount);
+        }
 
         return redirect()->route('inkoop.index')->with('success', 'Product bijgewerkt');
     }
