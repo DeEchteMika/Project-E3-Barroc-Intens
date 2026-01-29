@@ -9,6 +9,7 @@ use App\Http\Controllers\KlantenserviceController;
 use App\Http\Controllers\MedewerkersController;
 use App\Http\Controllers\StoringsContoller;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OnderhoudDashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'auth.login');
@@ -53,7 +54,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/send-mail-test', [ProcessMailController::class, 'send'])->name('send.mail.send');
 
     Route::view('/sales', 'sales.index')->name('sales');
-    Route::view('/onderhoud', 'onderhoud.index')->name('onderhoud');
+
+    // Onderhoud Dashboard Routes
+    Route::get('/onderhoud', [OnderhoudDashboardController::class, 'index'])->name('onderhoud');
+    Route::get('/onderhoud/dashboard', [OnderhoudDashboardController::class, 'index'])->name('onderhoud.dashboard');
+    Route::get('/onderhoud/create', [OnderhoudDashboardController::class, 'create'])->name('onderhoud.create');
+    Route::get('/onderhoud/list', [OnderhoudDashboardController::class, 'list'])->name('onderhoud.list');
+    Route::post('/onderhoud/store', [OnderhoudDashboardController::class, 'store'])->name('onderhoud.store');
+    Route::post('/onderhoud/{onderhoudSchema}/complete', [OnderhoudDashboardController::class, 'complete'])->name('onderhoud.complete');
+    Route::get('/onderhoud/{onderhoudSchema}/deactivate', [OnderhoudDashboardController::class, 'deactivate'])->name('onderhoud.deactivate');
+    Route::get('/onderhoud/klant/{klant}', [OnderhoudDashboardController::class, 'customerSchedule'])->name('onderhoud.customerSchedule');
+
     Route::view('/management', 'management.index')->name('management');
     Route::view('/admin', 'admin.index')->name('admin');
     Route::resource('storingen', StoringsContoller::class)->only(['index', 'show', 'edit', 'update', 'create', 'destroy', 'store',])->parameter('storingen', 'storing');

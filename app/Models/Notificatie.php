@@ -15,14 +15,30 @@ class Notificatie extends Model
 
     protected $fillable = [
         'medewerker_id',
+        'onderhoud_schema_id',
+        'klant_id',
         'type',
         'bericht_tekst',
         'link',
         'gelezen',
     ];
 
+    protected $casts = [
+        'gelezen' => 'boolean',
+    ];
+
     public function medewerker()
     {
         return $this->belongsTo(Medewerker::class, 'medewerker_id', 'medewerker_id');
+    }
+
+    public function onderhoudSchema()
+    {
+        return $this->belongsTo(OnderhoudSchema::class, 'onderhoud_schema_id', 'onderhoud_schema_id');
+    }
+
+    public function klant()
+    {
+        return $this->belongsTo(Klant::class, 'klant_id', 'klant_id');
     }
 }

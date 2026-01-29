@@ -37,4 +37,9 @@ class Contract extends Model
     {
         return $this->hasMany(Factuur::class, 'contract_id', 'contract_id');
     }
+
+    public function onderhoudSchemas()
+    {
+        return $this->hasMany(OnderhoudSchema::class, 'contract_id', 'contract_id');
+    }
 }

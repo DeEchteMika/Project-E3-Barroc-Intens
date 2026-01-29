@@ -27,6 +27,7 @@ class Klant extends Model
         'telefoon',
         'email',
         'bkr_check',
+        'onderhoud_interval_dagen',
         'opmerkingen',
     ];
 
@@ -43,6 +44,11 @@ class Klant extends Model
     public function storing()
     {
         return $this->hasMany(Storing::class, 'klant_id', 'klant_id');
+    }
+
+    public function onderhoudSchemas()
+    {
+        return $this->hasMany(OnderhoudSchema::class, 'klant_id', 'klant_id');
     }
 
     protected static function booted()

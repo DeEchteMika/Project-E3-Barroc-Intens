@@ -37,6 +37,7 @@ class CustomerController extends Controller
             'plaats'         => $data['city'] ?? null,
             'telefoon'       => $data['phone'] ?? null,
             'email'          => $data['email'],
+            'onderhoud_interval_dagen' => $data['onderhoud_interval_dagen'] ?? null,
             'opmerkingen'    => $this->composeNotes($data),
         ]);
 
@@ -65,6 +66,7 @@ class CustomerController extends Controller
             'plaats'         => $data['city'] ?? null,
             'telefoon'       => $data['phone'] ?? null,
             'email'          => $data['email'],
+            'onderhoud_interval_dagen' => $data['onderhoud_interval_dagen'] ?? null,
             'opmerkingen'    => $this->composeNotes($data),
         ]);
 
@@ -94,6 +96,7 @@ class CustomerController extends Controller
             'house_number'   => ['nullable', 'string', 'max:20'],
             'postal_code'    => ['nullable', 'string', 'max:20'],
             'city'           => ['nullable', 'string', 'max:100'],
+            'onderhoud_interval_dagen' => ['nullable', 'integer', 'in:30,180,365'],
             'kvk_number'     => ['nullable', 'string', 'max:100'],
             'vat_number'     => ['nullable', 'string', 'max:100'],
             'credit_limit'   => ['nullable', 'numeric', 'min:0'],

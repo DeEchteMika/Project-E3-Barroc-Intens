@@ -169,6 +169,23 @@
                         {{-- Company data --}}
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
+                                <label for="onderhoud_interval_dagen" class="block text-sm font-medium text-gray-700">
+                                    {{ __('Onderhoudsinterval') }}
+                                </label>
+                                <select
+                                    id="onderhoud_interval_dagen"
+                                    name="onderhoud_interval_dagen"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm
+                                           focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                                >
+                                    <option value="">{{ __('Geen onderhoud') }}</option>
+                                    <option value="30" @selected(old('onderhoud_interval_dagen', $customer->onderhoud_interval_dagen) == 30)>{{ __('1 maand') }}</option>
+                                    <option value="180" @selected(old('onderhoud_interval_dagen', $customer->onderhoud_interval_dagen) == 180)>{{ __('6 maanden') }}</option>
+                                    <option value="365" @selected(old('onderhoud_interval_dagen', $customer->onderhoud_interval_dagen) == 365)>{{ __('1 jaar') }}</option>
+                                </select>
+                            </div>
+
+                            <div>
                                 <label for="kvk_number" class="block text-sm font-medium text-gray-700">
                                     {{ __('KvK Number') }}
                                 </label>

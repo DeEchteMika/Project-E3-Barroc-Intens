@@ -19,6 +19,7 @@ class CreateKlantTable extends Migration
             $table->string('telefoon', 50)->nullable();
             $table->string('email', 150)->nullable();
             $table->enum('bkr_check', ['Goed gekeurd!', 'Nog niet gekeurd...', 'Afgekeurd!'])->default('Nog niet gekeurd...');
+            $table->unsignedInteger('onderhoud_interval_dagen')->nullable();
             $table->text('opmerkingen')->nullable();
             $table->timestamps();
         });
