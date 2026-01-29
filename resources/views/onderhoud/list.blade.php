@@ -56,7 +56,7 @@
                                     @endphp
                                     <tr class="border-b border-gray-200 {{ $isOverdue ? 'bg-red-50' : ($isDueSoon ? 'bg-orange-50' : '') }}">
                                         <td class="px-6 py-4 text-sm text-gray-900 font-medium">
-                                            {{ $m->contract->contractnummer }}
+                                            {{ optional($m->contract)->contractnummer ?? '—' }}
                                         </td>
                                         <td class="px-6 py-4 text-sm">
                                             <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded">

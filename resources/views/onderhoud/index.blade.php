@@ -82,6 +82,10 @@
                     onclick="showTab(event, 'overdue')">
                     Achterstallig
                 </a>
+                <a href="#" class="px-6 py-3 text-sm font-medium text-gray-600 border-b-2 border-transparent hover:text-gray-900 cursor-pointer"
+                    onclick="showTab(event, 'allMaintenance')">
+                    Alle onderhoud
+                </a>
             </nav>
         </div>
 
@@ -112,7 +116,7 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                        {{ $maintenance->contract->contractnummer }}
+                                        {{ optional($maintenance->contract)->contractnummer ?? '—' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
@@ -185,7 +189,7 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                        {{ $maintenance->contract->contractnummer }}
+                                        {{ optional($maintenance->contract)->contractnummer ?? '—' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
@@ -219,6 +223,73 @@
                 </div>
             @endif
         </div>
+
+        <!-- All Maintenance Tab -->
+        <div id="allMaintenance" class="p-6 hidden">
+            @if ($allMaintenance->count() > 0)
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Klant</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contract</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Interval</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Volgende Onderhoud</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach ($allMaintenance as $maintenance)
+                                @php
+                                    $isOverdue = $maintenance->isOverdue();
+                                    $isDueSoon = $maintenance->isDueSoon();
+                                @endphp
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ $maintenance->klant->bedrijfsnaam }}
+                                        </div>
+                                        <div class="text-sm text-gray-500">
+                                            {{ $maintenance->klant->contactpersoon }}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                        {{ optional($maintenance->contract)->contractnummer ?? '—' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            {{ $maintenance->interval_label }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                        {{ $maintenance->volgende_onderhoud->format('d-m-Y H:i') }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if ($isOverdue)
+                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                Achterstallig
+                                            </span>
+                                        @elseif ($isDueSoon)
+                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
+                                                Binnenkort
+                                            </span>
+                                        @else
+                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Op schema
+                                            </span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="text-center py-8">
+                    <p class="text-gray-500 text-lg">Geen onderhoudschema's gevonden</p>
+                </div>
+            @endif
+        </div>
     </div>
 </div>
 
@@ -229,6 +300,7 @@ function showTab(event, tabName) {
     // Hide all tabs
     document.getElementById('dueSoon').classList.add('hidden');
     document.getElementById('overdue').classList.add('hidden');
+    document.getElementById('allMaintenance').classList.add('hidden');
 
     // Show selected tab
     document.getElementById(tabName).classList.remove('hidden');

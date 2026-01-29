@@ -41,6 +41,72 @@ class OnderhoudService
     }
 
     /**
+     * Ensure onderhoud_schema exists for klanten with onderhoud_interval_dagen
+     */
+    public function syncCustomerIntervalsToSchemas(): int
+    {
+        $createdCount = 0;
+
+        $klanten = Klant::whereNotNull('onderhoud_interval_dagen')
+            ->with('contracten')
+            ->get();
+
+        foreach ($klanten as $klant) {
+            $days = (int) $klant->onderhoud_interval_dagen;
+            if ($days <= 0) {
+                continue;
+            }
+
+            if ($klant->contracten->isEmpty()) {
+                $exists = OnderhoudSchema::where('klant_id', $klant->klant_id)
+                    ->whereNull('contract_id')
+                    ->where('actief', true)
+                    ->exists();
+
+                if ($exists) {
+                    continue;
+                }
+
+                OnderhoudSchema::create([
+                    'contract_id' => null,
+                    'klant_id' => $klant->klant_id,
+                    'interval_dagen' => $days,
+                    'interval_label' => $this->intervalLabelFromDays($days),
+                    'volgende_onderhoud' => Carbon::now()->addDays($days),
+                    'actief' => true,
+                ]);
+
+                $createdCount++;
+                continue;
+            }
+
+            foreach ($klant->contracten as $contract) {
+                $exists = OnderhoudSchema::where('klant_id', $klant->klant_id)
+                    ->where('contract_id', $contract->contract_id)
+                    ->where('actief', true)
+                    ->exists();
+
+                if ($exists) {
+                    continue;
+                }
+
+                OnderhoudSchema::create([
+                    'contract_id' => $contract->contract_id,
+                    'klant_id' => $klant->klant_id,
+                    'interval_dagen' => $days,
+                    'interval_label' => $this->intervalLabelFromDays($days),
+                    'volgende_onderhoud' => Carbon::now()->addDays($days),
+                    'actief' => true,
+                ]);
+
+                $createdCount++;
+            }
+        }
+
+        return $createdCount;
+    }
+
+    /**
      * Get all overdue maintenance
      */
     public function getOverdueMaintenance(): Collection
@@ -61,6 +127,17 @@ class OnderhoudService
 
         return OnderhoudSchema::where('actief', true)
             ->where('volgende_onderhoud', '<=', $targetDate)
+            ->with(['klant', 'contract'])
+            ->orderBy('volgende_onderhoud', 'asc')
+            ->get();
+    }
+
+    /**
+     * Get all active maintenance
+     */
+    public function getAllMaintenance(): Collection
+    {
+        return OnderhoudSchema::where('actief', true)
             ->with(['klant', 'contract'])
             ->orderBy('volgende_onderhoud', 'asc')
             ->get();
@@ -145,5 +222,16 @@ class OnderhoudService
             $schema->save();
         }
         return $schema;
+    }
+
+    private function intervalLabelFromDays(int $days): string
+    {
+        return match ($days) {
+            30 => '1 maand',
+            180 => '6 maanden',
+            365 => '1 jaar',
+            1 => '1 dag',
+            default => $days . ' dagen',
+        };
     }
 }

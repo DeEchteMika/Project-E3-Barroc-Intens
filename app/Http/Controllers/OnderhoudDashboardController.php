@@ -22,12 +22,15 @@ class OnderhoudDashboardController extends Controller
      */
     public function index()
     {
+        $this->onderhoudService->syncCustomerIntervalsToSchemas();
         $summary = $this->onderhoudService->getDashboardSummary();
+        $allMaintenance = $this->onderhoudService->getAllMaintenance();
 
         return view('onderhoud.index', [
             'summary' => $summary,
             'dueSoon' => $summary['due_soon'],
             'overdue' => $summary['overdue'],
+            'allMaintenance' => $allMaintenance,
         ]);
     }
 

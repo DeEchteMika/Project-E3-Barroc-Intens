@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             \Database\Seeders\MedewerkerSeeder::class,
             \Database\Seeders\ProductSeeder::class,
             \Database\Seeders\KlantSeeder::class,
+            \Database\Seeders\ContractSeeder::class,
             \Database\Seeders\StoringSeeder::class,
         ]);
     }

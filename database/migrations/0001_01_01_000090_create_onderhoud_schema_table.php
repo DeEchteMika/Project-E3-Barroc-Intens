@@ -10,7 +10,7 @@ class CreateOnderhoudSchemaTable extends Migration
     {
         Schema::create('onderhoud_schema', function (Blueprint $table) {
             $table->increments('onderhoud_schema_id');
-            $table->unsignedInteger('contract_id');
+            $table->unsignedInteger('contract_id')->nullable();
             $table->unsignedInteger('klant_id');
             $table->unsignedInteger('interval_dagen'); // 30, 180, 365 dagen
             $table->string('interval_label', 50); // '1 maand', '6 maanden', '1 jaar'
