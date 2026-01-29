@@ -29,15 +29,15 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        
+        return view('sales.show', compact('product'));
     }
 
     /**
