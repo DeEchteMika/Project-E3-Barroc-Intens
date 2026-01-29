@@ -38,6 +38,6 @@
     </div>
 
     <div class="mt-6">
-        <a href="{{ route('inkoop.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-md hover:bg-gray-700">Terug naar lijst</a>
+        <a href="{{ route('sales.overzicht') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-md hover:bg-gray-700">Terug naar lijst</a>
     </div>
 @endsection
