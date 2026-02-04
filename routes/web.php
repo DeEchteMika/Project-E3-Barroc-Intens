@@ -21,8 +21,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sales-create', [CustomerController::class, 'create'])->name('sales.create');
     Route::get('/sales-overzicht', [ProductController::class, 'index'])->name('sales.overzicht');
     Route::get('/sales-productdetails/{product}', [ProductController::class, 'show'])->name('sales.productdetails');
-
     Route::get('/item', [CustomerKooptController::class, 'index'])->name('sales.item');
+
     Route::resource('customers', CustomerController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 });
