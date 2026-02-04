@@ -101,6 +101,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Interval</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Volgende Onderhoud</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uren Resterend</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monteur</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acties</th>
                             </tr>
                         </thead>
@@ -130,6 +131,30 @@
                                         <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
                                             {{ $maintenance->daysUntilMaintenance() }} uren
                                         </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        @if($maintenance->monteur)
+                                            <div class="flex items-center">
+                                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded">
+                                                    {{ $maintenance->monteur->voornaam }} {{ $maintenance->monteur->achternaam }}
+                                                </span>
+                                            </div>
+                                        @else
+                                            <form method="POST" action="{{ route('onderhoud.assignMonteur', $maintenance->onderhoud_schema_id) }}" class="flex items-center space-x-2">
+                                                @csrf
+                                                <select name="monteur_id" required class="text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                    <option value="">Selecteer monteur</option>
+                                                    @foreach($monteurs as $monteur)
+                                                        <option value="{{ $monteur->medewerker_id }}">
+                                                            {{ $monteur->voornaam }} {{ $monteur->achternaam }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
+                                                    Toewijzen
+                                                </button>
+                                            </form>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                         <form method="POST" action="{{ route('onderhoud.complete', $maintenance->onderhoud_schema_id) }}" style="display: inline;">
@@ -173,6 +198,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Interval</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vervaldatum</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dagen Achterstand</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monteur</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acties</th>
                             </tr>
                         </thead>
@@ -203,6 +229,30 @@
                                         <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                             {{ abs($maintenance->daysUntilMaintenance()) }} dagen
                                         </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        @if($maintenance->monteur)
+                                            <div class="flex items-center">
+                                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded">
+                                                    {{ $maintenance->monteur->voornaam }} {{ $maintenance->monteur->achternaam }}
+                                                </span>
+                                            </div>
+                                        @else
+                                            <form method="POST" action="{{ route('onderhoud.assignMonteur', $maintenance->onderhoud_schema_id) }}" class="flex items-center space-x-2">
+                                                @csrf
+                                                <select name="monteur_id" required class="text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                    <option value="">Selecteer monteur</option>
+                                                    @foreach($monteurs as $monteur)
+                                                        <option value="{{ $monteur->medewerker_id }}">
+                                                            {{ $monteur->voornaam }} {{ $monteur->achternaam }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
+                                                    Toewijzen
+                                                </button>
+                                            </form>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                         <form method="POST" action="{{ route('onderhoud.complete', $maintenance->onderhoud_schema_id) }}" style="display: inline;">
@@ -236,6 +286,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Interval</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Volgende Onderhoud</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monteur</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -277,6 +328,30 @@
                                             <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                                 Op schema
                                             </span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        @if($maintenance->monteur)
+                                            <div class="flex items-center">
+                                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded">
+                                                    {{ $maintenance->monteur->voornaam }} {{ $maintenance->monteur->achternaam }}
+                                                </span>
+                                            </div>
+                                        @else
+                                            <form method="POST" action="{{ route('onderhoud.assignMonteur', $maintenance->onderhoud_schema_id) }}" class="flex items-center space-x-2">
+                                                @csrf
+                                                <select name="monteur_id" required class="text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                    <option value="">Selecteer monteur</option>
+                                                    @foreach($monteurs as $monteur)
+                                                        <option value="{{ $monteur->medewerker_id }}">
+                                                            {{ $monteur->voornaam }} {{ $monteur->achternaam }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
+                                                    Toewijzen
+                                                </button>
+                                            </form>
                                         @endif
                                     </td>
                                 </tr>

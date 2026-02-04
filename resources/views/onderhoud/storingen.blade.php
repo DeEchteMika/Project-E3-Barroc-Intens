@@ -9,6 +9,29 @@
         <div class="mb-4 p-3 rounded bg-green-50 border border-green-200 text-green-800">{{ session('success') }}</div>
     @endif
 
+    <!-- Filter Sectie -->
+    <div class="mb-6 bg-white p-4 rounded-lg shadow">
+        <form method="GET" action="{{ route('storingen.index') }}" class="flex items-end gap-4">
+            <div class="flex-1">
+                <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Filter op Status</label>
+                <select name="status" id="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option value="">-- Alle Statussen --</option>
+                    <option value="open" @selected(request('status') === 'open')>Open</option>
+                    <option value="in behandeling" @selected(request('status') === 'in behandeling')>In behandeling</option>
+                    <option value="opgelost" @selected(request('status') === 'opgelost')>Opgelost</option>
+                </select>
+            </div>
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                Filter
+            </button>
+            @if(request('status'))
+                <a href="{{ route('storingen.index') }}" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400">
+                    Reset
+                </a>
+            @endif
+        </form>
+    </div>
+
     <div class="overflow-x-auto bg-white shadow rounded-lg">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">

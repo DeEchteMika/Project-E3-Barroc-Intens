@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\OnderhoudSchema;
 use App\Models\Contract;
 use App\Models\Klant;
+use App\Models\Medewerker;
 use App\Services\OnderhoudService;
+use App\Mail\MonteurToegewezen;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class OnderhoudDashboardController extends Controller
 {
@@ -26,11 +29,19 @@ class OnderhoudDashboardController extends Controller
         $summary = $this->onderhoudService->getDashboardSummary();
         $allMaintenance = $this->onderhoudService->getAllMaintenance();
 
+        // Haal monteurs op (alleen medewerkers met functie 'Monteur')
+        $monteurs = Medewerker::where('actief', true)
+            ->where('functie', 'Monteur')
+            ->orderBy('voornaam')
+            ->orderBy('achternaam')
+            ->get();
+
         return view('onderhoud.index', [
             'summary' => $summary,
             'dueSoon' => $summary['due_soon'],
             'overdue' => $summary['overdue'],
             'allMaintenance' => $allMaintenance,
+            'monteurs' => $monteurs,
         ]);
     }
 
@@ -55,8 +66,16 @@ class OnderhoudDashboardController extends Controller
     {
         $maintenanceDue = $this->onderhoudService->getMaintenanceDueOrOverdue();
 
+        // Haal monteurs op (alleen medewerkers met functie 'Monteur')
+        $monteurs = Medewerker::where('actief', true)
+            ->where('functie', 'Monteur')
+            ->orderBy('voornaam')
+            ->orderBy('achternaam')
+            ->get();
+
         return view('onderhoud.list', [
             'maintenance' => $maintenanceDue,
+            'monteurs' => $monteurs,
         ]);
     }
 
@@ -112,6 +131,38 @@ class OnderhoudDashboardController extends Controller
 
         return redirect()->back()
             ->with('success', 'Onderhoudschema gedeactiveerd');
+    }
+
+    /**
+     * Assign a monteur to maintenance and send email to customer
+     */
+    public function assignMonteur(Request $request, $onderhoudSchemaId)
+    {
+        $validated = $request->validate([
+            'monteur_id' => 'required|exists:medewerker,medewerker_id',
+        ]);
+
+        try {
+            $onderhoud = OnderhoudSchema::findOrFail($onderhoudSchemaId);
+            $monteur = Medewerker::findOrFail($validated['monteur_id']);
+
+            // Update het onderhoud met de monteur
+            $onderhoud->update([
+                'monteur_id' => $validated['monteur_id']
+            ]);
+
+            // Verstuur email naar de klant
+            if ($onderhoud->klant && $onderhoud->klant->email) {
+                Mail::to($onderhoud->klant->email)
+                    ->send(new MonteurToegewezen($onderhoud, $monteur));
+            }
+
+            return redirect()->back()
+                ->with('success', 'Monteur toegewezen en klant is geïnformeerd per email');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Fout bij het toewijzen van monteur: ' . $e->getMessage());
+        }
     }
 
     /**

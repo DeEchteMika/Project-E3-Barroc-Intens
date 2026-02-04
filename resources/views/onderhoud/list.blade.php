@@ -45,6 +45,7 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase">Interval</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase">Volgende Onderhoud</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase">Monteur</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase">Acties</th>
                                 </tr>
                             </thead>
@@ -79,6 +80,30 @@
                                                 <span class="px-2 py-1 bg-green-100 text-green-800 rounded font-semibold">
                                                     ✅ Op schema
                                                 </span>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 text-sm">
+                                            @if($m->monteur)
+                                                <div class="flex items-center">
+                                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded">
+                                                        {{ $m->monteur->voornaam }} {{ $m->monteur->achternaam }}
+                                                    </span>
+                                                </div>
+                                            @else
+                                                <form method="POST" action="{{ route('onderhoud.assignMonteur', $m->onderhoud_schema_id) }}" class="flex items-center space-x-2">
+                                                    @csrf
+                                                    <select name="monteur_id" required class="text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                        <option value="">Selecteer monteur</option>
+                                                        @foreach($monteurs as $monteur)
+                                                            <option value="{{ $monteur->medewerker_id }}">
+                                                                {{ $monteur->voornaam }} {{ $monteur->achternaam }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium">
+                                                        Toewijzen
+                                                    </button>
+                                                </form>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 text-sm font-medium space-x-2">
