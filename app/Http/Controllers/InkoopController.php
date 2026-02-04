@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use App\Models\Product;
+use App\Models\Inkoop;
+use App\Models\InkoopRegel;
 
 class InkoopController extends Controller
 {
-    // Show list of products (management for inkoop)
+
     public function index()
     {
         $products = Product::orderBy('naam')->get();
@@ -15,7 +19,6 @@ class InkoopController extends Controller
 
     }
 
-    // Form to create a new product
     public function create()
     {
         return view('inkoop.create');
@@ -32,15 +35,38 @@ class InkoopController extends Controller
             'hoeveelheid' => 'required|integer|min:1',
         ]);
 
-        $product->update([
-            'voorraad' => $product->voorraad + $request->hoeveelheid,
+        $aantal = intval($request->hoeveelheid);
+        $product->increment('voorraad', $aantal);
+
+        $medewerkerId = optional(Auth::user())->medewerker ? Auth::user()->medewerker->medewerker_id : null;
+        $prijsPerStuk = $product->prijs ?? 0;
+        $subtotaal = $prijsPerStuk * $aantal;
+
+        $inkoop = Inkoop::create([
+            'medewerker_id' => $medewerkerId,
+            'datum' => Carbon::now()->format('Y-m-d H:i:s'),
+            'totaalbedrag' => $subtotaal,
+            'opmerking' => 'Bijbesteld via inkoop.restock',
         ]);
 
-        return redirect()->route('inkoop.show', $product->product_id)->with('success', 'Voorraad bijgewerkt naar ' . $product->voorraad);
+        InkoopRegel::create([
+            'inkoop_id' => $inkoop->inkoop_id,
+            'product_id' => $product->product_id,
+            'aantal' => $aantal,
+            'prijs_per_stuk' => $prijsPerStuk,
+            'subtotaal' => $subtotaal,
+        ]);
+
+        return redirect()->route('inkoop.index')->with('success', 'Bestelling ontvangen');
 
     }
 
-    // Store a new product in the database
+    public function orders()
+    {
+        $bestellingen = Inkoop::with('regels.product', 'medewerker')->orderBy('datum', 'desc')->get();
+        return view('inkoop.bestellingen', compact('bestellingen'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -99,10 +125,6 @@ class InkoopController extends Controller
         return redirect()->route('inkoop.index')->with('success', 'Product bijgewerkt');
     }
 
-
-
-
-    // Delete a product
     public function destroy(Product $product)
     {
         $product->delete();

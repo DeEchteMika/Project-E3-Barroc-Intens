@@ -3,8 +3,9 @@
 @section('content')
 <div class="max-w-7xl mx-auto py-8 px-4">
     <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold text-gray-900">Producten (Inkoop beheer)</h1>
+        <h1 class="text-2xl font-semibold text-gray-900">Producten</h1>
         <a href="{{ route('inkoop.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-gray-900 text-sm font-medium rounded-md hover:bg-blue-700">Nieuw product</a>
+        <a href="{{ route('inkoop.orders') }}" class="inline-flex items-center px-4 py-2 bg-green-600 text-gray-900 text-sm font-medium rounded-md hover:bg-green-700">Bekijk bestellingen</a>
     </div>
 
     @if(session('success'))
@@ -48,6 +49,15 @@
         </table>
     </div>
 </div>
+
+@if(session('success'))
+    <script>
+        (function(){
+            var msg = {!! json_encode(session('success')) !!};
+            alert(msg);
+        })();
+    </script>
+@endif
 
 @endsection
 

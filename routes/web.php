@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InkoopController;
 use App\Http\Controllers\FinancienController;
 use App\Http\Controllers\KlantenserviceController;
+use App\Http\Controllers\CustomerKooptController;
 use App\Http\Controllers\MedewerkersController;
 use App\Http\Controllers\StoringsContoller;
 use App\Http\Controllers\ProductController;
@@ -21,6 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sales-overzicht', [ProductController::class, 'index'])->name('sales.overzicht');
     Route::get('/sales-productdetails/{product}', [ProductController::class, 'show'])->name('sales.productdetails');
 
+    Route::get('/item', [CustomerKooptController::class, 'index'])->name('sales.item');
     Route::resource('customers', CustomerController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 });
@@ -37,6 +39,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('inkoop/{product}', [InkoopController::class, 'destroy'])->name('inkoop.destroy');
     Route::get('inkoop/{product}/edit', [InkoopController::class, 'edit'])->name('inkoop.edit');
     Route::put('inkoop/{product}', [InkoopController::class, 'update'])->name('inkoop.update');
+
+    Route::get('inkoop/bestellingen', [InkoopController::class, 'orders'])->name('inkoop.orders');
+
     Route::get('inkoop/{product}', [InkoopController::class, 'show'])->name('inkoop.show');
 
 
@@ -63,6 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/onderhoud/list', [OnderhoudDashboardController::class, 'list'])->name('onderhoud.list');
     Route::post('/onderhoud/store', [OnderhoudDashboardController::class, 'store'])->name('onderhoud.store');
     Route::post('/onderhoud/{onderhoudSchema}/complete', [OnderhoudDashboardController::class, 'complete'])->name('onderhoud.complete');
+    Route::post('/onderhoud/{onderhoudSchema}/assign-monteur', [OnderhoudDashboardController::class, 'assignMonteur'])->name('onderhoud.assignMonteur');
     Route::get('/onderhoud/{onderhoudSchema}/deactivate', [OnderhoudDashboardController::class, 'deactivate'])->name('onderhoud.deactivate');
     Route::get('/onderhoud/klant/{klant}', [OnderhoudDashboardController::class, 'customerSchedule'])->name('onderhoud.customerSchedule');
 
