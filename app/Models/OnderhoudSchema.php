@@ -17,6 +17,7 @@ class OnderhoudSchema extends Model
     protected $fillable = [
         'contract_id',
         'klant_id',
+        'monteur_id',
         'interval_dagen',
         'interval_label',
         'volgende_onderhoud',
@@ -39,6 +40,11 @@ class OnderhoudSchema extends Model
     public function klant()
     {
         return $this->belongsTo(Klant::class, 'klant_id', 'klant_id');
+    }
+
+    public function monteur()
+    {
+        return $this->belongsTo(Medewerker::class, 'monteur_id', 'medewerker_id');
     }
 
     /**

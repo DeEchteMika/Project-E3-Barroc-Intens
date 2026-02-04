@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class StoringsContoller extends Controller
 {
-	public function index()
+	public function index(Request $request)
 	{
 		$user = auth()->user();
 		$medewerker = $user->medewerker;
@@ -30,6 +30,11 @@ class StoringsContoller extends Controller
 			$query->where('monteur_id', $medewerker->medewerker_id);
 		}
 		// Managers/Admin/Hooft Onderhoud zien ALLE storingen
+
+		// Filter op status indien aanwezig
+		if ($request->filled('status')) {
+			$query->where('status', $request->input('status'));
+		}
 
 		$storingen = $query->orderByDesc('created_at')
 			->paginate(15);
