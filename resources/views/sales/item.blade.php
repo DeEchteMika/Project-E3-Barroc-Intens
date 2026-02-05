@@ -73,7 +73,7 @@
                                 </td>
 
                                 <td class="px-3 py-2">
-                                    <a href="{{ route('financien.edit', $k->klant_id) }}" class="text-blue-600 hover:underline text-sm">Aanpassen</a>
+                                    <a href="{{ route('createContract', $k->klant_id) }}" class="text-blue-600 hover:underline text-sm">Kies producten</a>
                                 </td>
                             </tr>
                         @empty

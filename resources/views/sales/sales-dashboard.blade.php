@@ -159,9 +159,9 @@
                             </h3>
                         </div>
                         <div class="p-6 space-y-3">
-                            <a href="#"
+                            <a href="{{ route('sales.item') }}"
                                 class="flex items-center justify-between px-3 py-2 rounded-md border border-gray-200 text-sm text-gray-800 hover:bg-gray-50">
-                                <span>{{ __('Create new quote') }}</span>
+                                <span>{{ __('Add Product to Customer') }}</span>
                                 <span class="text-xs text-gray-400">Q</span>
                             </a>
                             <a href="{{ route('sales.overzicht') }}"

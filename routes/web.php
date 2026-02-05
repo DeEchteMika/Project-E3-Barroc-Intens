@@ -22,10 +22,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sales-overzicht', [ProductController::class, 'index'])->name('sales.overzicht');
     Route::get('/sales-productdetails/{product}', [ProductController::class, 'show'])->name('sales.productdetails');
     Route::get('/item', [CustomerKooptController::class, 'index'])->name('sales.item');
+    Route::get('sales-createContract/{id}', [CustomerKooptController::class, 'create'])->name('createContract');
+    Route::post('/sales-storeContract', [CustomerKooptController::class, 'store'])->name('storeContract');
 
-    Route::resource('customers', CustomerController::class)
-        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
-});
+    Route::resource('customers', CustomerController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
