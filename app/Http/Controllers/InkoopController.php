@@ -36,8 +36,11 @@ class InkoopController extends Controller
         ]);
 
         $aantal = intval($request->hoeveelheid);
-        $product->increment('voorraad', $aantal);
 
+        // Gebruik de helper method die voorraad update en automatisch bijbestellen afhandelt
+        $product->updateVoorraad($aantal);
+
+        // Maak ook handmatig de bijstellingsbestelling aan
         $medewerkerId = optional(Auth::user())->medewerker ? Auth::user()->medewerker->medewerker_id : null;
         $prijsPerStuk = $product->prijs ?? 0;
         $subtotaal = $prijsPerStuk * $aantal;
@@ -106,20 +109,22 @@ class InkoopController extends Controller
             'heeft_maler' => 'nullable|boolean',
         ]);
 
+        $nieuweVoorraad = intval($request->voorraad ?? 0);
+        $huidigeVoorraad = $product->voorraad;
+
+        // Update alle velden behalve voorraad
         $product->update([
             'productnummer' => $request->productnummer,
             'naam' => $request->naam,
             'omschrijving' => $request->omschrijving,
             'prijs' => $request->prijs ?? 0,
-            'voorraad' => $request->voorraad ?? 0,
             'heeft_maler' => $request->has('heeft_maler') ? (bool) $request->heeft_maler : false,
         ]);
-        $threshold = config('inkoop.threshold', 5);
-        $restockAmount = config('inkoop.restock_amount', 20);
 
-        if ($product->voorraad < $threshold) {
-
-            $product->increment('voorraad', $restockAmount);
+        // Update voorraad via helper method die automatisch bijbestellen afhandelt
+        if ($nieuweVoorraad !== $huidigeVoorraad) {
+            $verschil = $nieuweVoorraad - $huidigeVoorraad;
+            $product->updateVoorraad($verschil);
         }
 
         return redirect()->route('inkoop.index')->with('success', 'Product bijgewerkt');
