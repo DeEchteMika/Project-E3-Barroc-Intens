@@ -23,6 +23,12 @@ class Contract extends Model
         'opmerkingen',
     ];
 
+    public function products(){
+        return $this->belongsToMany(Product::class, 'contract_product', 'contract_id', 'product_id')
+            ->withPivot('aantal')
+            ->withTimestamps();
+    }
+
     public function klant()
     {
         return $this->belongsTo(Klant::class, 'klant_id', 'klant_id');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Contract;
 use App\Models\Product;
 use App\Models\Klant;
@@ -34,33 +35,44 @@ class CustomerKooptController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //fill store function, and make it so that it checks if the aantal is available in stock
-        $validatedData = $request->validate([
-            'klant_id' => 'required|exists:klanten,id',
-            'product_id' => 'required|exists:products,id',
-            'aantal' => 'required|integer|min:1',
-        ]);
-        $product = Product::find($validatedData['product_id']);
-        if ($product->stock >= $validatedData['aantal']) {
-            // Reduce stock
-            $product->stock -= $validatedData['aantal'];
-            $product->save();
+{
+    $validated = $request->validate([
+        'klant_id'   => 'required|exists:klant,klant_id',
+        'product_id'=> 'required|exists:product,product_id',
+        'aantal'    => 'required|integer|min:1'
+    ]);
 
-            // Here you would typically create a contract record in the database
-            // For example:
-            Contract::create([
-            'klant_id' => $validatedData['klant_id'],
-            'product_id' => $validatedData['product_id'],
-            'aantal' => $validatedData['aantal'],
-            // other contract details...
-            ]);
+    return DB::transaction(function () use ($validated) {
 
-            return redirect()->route('sales.item')->with('success', 'Contract created successfully!');
-                } else {
-            return redirect()->back()->withErrors(['aantal' => 'Not enough stock available.']);
+        // Lock product row
+        $product = Product::where('product_id', $validated['product_id'])
+            ->lockForUpdate()
+            ->first();
+
+        if ($product->voorraad < $validated['aantal']) {
+            return back()->withErrors(['aantal' => 'Not enough stock available']);
         }
-    }
+
+        // Reduce stock
+        $product->voorraad -= $validated['aantal'];
+        $product->save();
+
+        // Create contract
+        $contract = Contract::create([
+            'klant_id' => $validated['klant_id'],
+        ]);
+
+        // Attach product to contract with quantity
+        $contract->products()->attach(
+            $validated['product_id'],
+            ['aantal' => $validated['aantal']]
+        );
+
+        return redirect()
+            ->route('sales.item')
+            ->with('success', 'Contract created successfully');
+    });
+}
 
     /**
      * Display the specified resource.
