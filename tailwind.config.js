@@ -11,8 +11,17 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                brand: {
+                    DEFAULT: '#212121',
+                    yellow: '#ffd700',
+                    light: '#fbfbfb',
+                },
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                display: ['"Big Shoulders Display"', 'cursive'],
+                roboto: ['Roboto', 'system-ui', ...defaultTheme.fontFamily.sans],
             },
         },
     },

@@ -14,15 +14,16 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+    <body class="font-sans text-gray-900 antialiased" style="background: linear-gradient(135deg, #fbfbfb 0%, #f5f5f5 100%);">
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
+            <div class="mb-8">
+                <a href="/" class="inline-block p-3 rounded-lg border-2 border-[#ffd700] bg-white hover:bg-[#fffacd] transition-colors">
+                    <x-application-logo class="w-16 h-16 fill-current text-[#212121]" />
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full sm:max-w-md px-6 py-8 bg-white shadow-lg overflow-hidden sm:rounded-xl border border-[#ffd700]/30 relative">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#ffd700] via-[#ffed4e] to-[#ffd700]"></div>
                 {{ $slot }}
             </div>
         </div>
