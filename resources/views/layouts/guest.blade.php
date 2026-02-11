@@ -18,7 +18,7 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
             <div class="mb-8">
                 <a href="/" class="inline-block p-3 rounded-lg border-2 border-[#ffd700] bg-white hover:bg-[#fffacd] transition-colors">
-                    <x-application-logo class="w-16 h-16 fill-current text-[#212121]" />
+                   <h1 class="brand-title text-3xl text-[#212121]">Inloggen</h1>
                 </a>
             </div>
 
